@@ -12,6 +12,9 @@ export default {
           "100%": { opacity: 0 },
         },
       }),
+      height: {
+        "screen-small": "100svh",
+      },
     },
   },
   plugins: [],

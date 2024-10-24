@@ -1,11 +1,12 @@
+import { RouterProvider } from "react-router-dom";
+import MainRouter from "./routes/main-router";
 import "./App.css";
 import CommonPopup from "./components/CommonPopup";
 
 function App() {
   return (
     <>
-      <h1 className="text-3xl font-bold underline">Wellcome to Zoozoo club</h1>
-      <div className="flex flex-row gap-2"></div>
+      <RouterProvider router={MainRouter}></RouterProvider>
       <CommonPopup />
     </>
   );
