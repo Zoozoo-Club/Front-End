@@ -3,6 +3,7 @@ import MainRouter from "./routes/main-router";
 import "./App.css";
 import CommonPopup from "./components/CommonPopup";
 import LoginPopup from "./components/LoginPopup";
+import "./index.css";
 
 function App() {
   return (
