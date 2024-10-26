@@ -10,3 +10,15 @@ export interface IProductRes {
   risk?: number | null;
   url?: string | null;
 }
+
+export interface IFollowingRes {
+  userId?: number | null;
+  nickname?: string | null;
+  clubName?: string | null;
+}
+
+export interface IFollowerRes {
+  userId?: number | null;
+  nickname?: string | null;
+  clubName?: string | null;
+}

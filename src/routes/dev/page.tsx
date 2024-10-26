@@ -4,6 +4,7 @@ import Chart from './components/Chart';
 import LineChart from './components/LineChart';
 import { useCommonModalStore, useLoginModalStore } from '@/store/store';
 import productsAPI from '@/apis/productsAPI';
+import followsAPI from '@/apis/followsAPI';
 //테스트용 페이지
 export default function Dev() {
   const { closeModal, openModal } = useCommonModalStore();
@@ -34,8 +35,75 @@ export default function Dev() {
         console.error('상품 로딩 실패:', error);
       }
     }
+    async function fetchFollows() {
+      try {
+        const follows = new followsAPI();
+        const myFollowers = await follows.myFollowers();
+        const myFollowing = await follows.myFollowing();
+
+        setUserProducts(myFollowers);
+        setClubProducts(myFollowing);
+
+        // 콘솔에서도 확인할 수 있게 로깅
+        console.log('내 팔로워:', myFollowers);
+        console.log('내 팔로잉:', myFollowing);
+      } catch (error) {
+        console.error('팔로윙 팔로워 로딩 실패:', error);
+      }
+    }
+    async function testFollowUnfollow() {
+      const follows = new followsAPI();
+      try {
+        console.log('userId=2로 팔로우 요청 중...');
+        const followResponse = await follows.follow(105);
+        console.log('팔로우 성공:', followResponse);
+
+        console.log('userId=2로 언팔로우 요청 중...');
+        const unFollowResponse = await follows.unFollow(105);
+        console.log('언팔로우 성공:', unFollowResponse);
+      } catch (error) {
+        console.error('팔로우/언팔로우 테스트 실패:', error);
+      }
+    }
+
+    async function testTargetUserFollows() {
+      const follows = new followsAPI();
+      const targetUserId = 2;
+      try {
+        console.log('userId=2로 팔로잉 조회 중...');
+        const targetUserFollowing = await follows.targetUserFollowing(
+          targetUserId
+        );
+        console.log('팔로잉 조회 성공:', targetUserFollowing);
+
+        console.log('userId=2로 팔로우 조회 중...');
+        const targetUserFollowers = await follows.targetUserFollowers(
+          targetUserId
+        );
+        console.log('팔로우 조회 성공:', targetUserFollowers);
+      } catch (error) {
+        console.error('팔로우/언팔로우 조회 테스트 실패:', error);
+      }
+    }
+
+    async function testTargetUserFollowsStatus() {
+      const follows = new followsAPI();
+      const targetUserId = 2;
+      try {
+        console.log(`${targetUserId}=2로 팔로잉 상태 조회 중...`);
+        const targetUserFollowingStatus =
+          await follows.targetUserFollowingStatus(targetUserId);
+        console.log('팔로잉 상태 조회 성공:', targetUserFollowingStatus);
+      } catch (error) {
+        console.error('팔로잉 상태 조회 테스트 실패:', error);
+      }
+    }
 
     fetchProducts();
+    fetchFollows();
+    testFollowUnfollow();
+    testTargetUserFollows();
+    testTargetUserFollowsStatus();
   }, []);
   return (
     <div>
