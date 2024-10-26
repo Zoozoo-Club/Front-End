@@ -6,6 +6,7 @@ import { useCommonModalStore, useLoginModalStore } from '@/store/store';
 import productsAPI from '@/apis/productsAPI';
 import followsAPI from '@/apis/followsAPI';
 import postsAPI from '@/apis/postsAPI';
+import clubAPI from '@/apis/clubAPI';
 //테스트용 페이지
 export default function Dev() {
   const { closeModal, openModal } = useCommonModalStore();
@@ -52,26 +53,26 @@ export default function Dev() {
         console.error('팔로윙 팔로워 로딩 실패:', error);
       }
     }
-    async function testFollowUnfollow() {
+    async function testFollowUnfollow(targetUserId: number) {
       const follows = new followsAPI();
       try {
-        console.log('userId=2로 팔로우 요청 중...');
-        const followResponse = await follows.follow(105);
+        console.log(`${targetUserId}로 팔로우 요청 중...`);
+        const followResponse = await follows.follow(targetUserId);
         console.log('팔로우 성공:', followResponse);
 
-        console.log('userId=2로 언팔로우 요청 중...');
-        const unFollowResponse = await follows.unFollow(105);
+        console.log(`${targetUserId}로 언팔로우 요청 중...`);
+        const unFollowResponse = await follows.unFollow(targetUserId);
         console.log('언팔로우 성공:', unFollowResponse);
       } catch (error) {
         console.error('팔로우/언팔로우 테스트 실패:', error);
       }
     }
 
-    async function testTargetUserFollows() {
+    async function testTargetUserFollows(targetUserId: number) {
       const follows = new followsAPI();
-      const targetUserId = 2;
+
       try {
-        console.log('userId=2로 팔로잉 조회 중...');
+        console.log(`${targetUserId} 로 팔로잉 조회 중...`);
         const targetUserFollowing = await follows.targetUserFollowing(
           targetUserId
         );
@@ -87,11 +88,11 @@ export default function Dev() {
       }
     }
 
-    async function testTargetUserFollowsStatus() {
+    async function testTargetUserFollowsStatus(targetUserId: number) {
       const follows = new followsAPI();
-      const targetUserId = 2;
+
       try {
-        console.log(`${targetUserId}=2로 팔로잉 상태 조회 중...`);
+        console.log(`${targetUserId}로 팔로잉 상태 조회 중...`);
         const targetUserFollowingStatus =
           await follows.targetUserFollowingStatus(targetUserId);
         console.log('팔로잉 상태 조회 성공:', targetUserFollowingStatus);
@@ -114,13 +115,34 @@ export default function Dev() {
         console.log('포스트 가져오기 실패: ', error);
       }
     }
-
+    async function fetchClubInfo(clubId: number) {
+      const club = new clubAPI();
+      try {
+        console.log('클럽 정보 가져오기 중...');
+        const clubInfo = await club.info(clubId);
+        console.log('클럽정보: ', clubInfo);
+      } catch (error) {
+        console.log('클럽정보 가져오기 실패: ', error);
+      }
+    }
+    async function fetchClubCurrentPrice(clubId: number) {
+      const club = new clubAPI();
+      try {
+        console.log('클럽 실시간가격 가져오기 중...');
+        const currentPrice = await club.currentPrice(clubId);
+        console.log('클럽 실시간가격: ', currentPrice);
+      } catch (error) {
+        console.log('클럽 실시간가격 가져오기 실패: ', error);
+      }
+    }
     fetchProducts();
     fetchFollows();
-    testFollowUnfollow();
-    testTargetUserFollows();
-    testTargetUserFollowsStatus();
+    testFollowUnfollow(105);
+    testTargetUserFollows(6);
+    testTargetUserFollowsStatus(2);
     fetchPosts();
+    fetchClubInfo(1);
+    fetchClubCurrentPrice(1);
   }, []);
   return (
     <div>

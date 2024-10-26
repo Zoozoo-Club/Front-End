@@ -35,3 +35,26 @@ export interface IPostRes {
   updatedAt?: Date | null;
   userId?: number | null;
 }
+
+export interface IStockHoldings {
+  stockCode?: string | null;
+  stockName?: string | null;
+  holdingRatio?: number | null;
+  roi?: number | null;
+  holdingMembers?: number | null;
+}
+export interface IClubPortfolio {
+  totalMembers?: number | null;
+  totalInvestmentAmount?: number | null;
+  stockHoldings?: IStockHoldings | null;
+}
+export interface ICompanyInfo {
+  companyId?: number;
+  companyName?: string;
+  logoId?: string;
+  websiteUrl?: string;
+}
+export interface IClubInfoRes {
+  companyInfo?: ICompanyInfo | null;
+  clubPortfolio?: IClubPortfolio | null;
+}
