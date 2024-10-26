@@ -1,0 +1,74 @@
+{
+  "clubRank": [
+    {
+      "no": 1,
+      "clubName": "삼성전자",
+      "profit": "13.4",
+      "id": "0",
+      "imgId": "005930"
+    },
+    {
+      "no": 2,
+      "clubName": "하이닉스",
+      "profit": "12.4",
+      "id": "1",
+      "imgId": "005930"
+    },
+    {
+      "no": 3,
+      "clubName": "HK바이오이노베이션",
+      "profit": "11",
+      "id": "2",
+      "imgId": "005930"
+    },
+    {
+      "no": 4,
+      "clubName": "넷마블",
+      "profit": "10.4",
+      "id": "3",
+      "imgId": "005930"
+    },
+    {
+      "no": 5,
+      "clubName": "에코프로비엠",
+      "profit": "9.4",
+      "id": "4",
+      "imgId": "005930"
+    },
+    {
+      "no": 6,
+      "clubName": "샤넬코리아",
+      "profit": "4.4",
+      "id": "5",
+      "imgId": "005930"
+    },
+    {
+      "no": 7,
+      "clubName": "크래프톤",
+      "profit": "3.4",
+      "id": "6",
+      "imgId": "005930"
+    },
+    {
+      "no": 8,
+      "clubName": "LG",
+      "profit": "1.4",
+      "id": "7",
+      "imgId": "005930"
+    },
+    {
+      "no": 9,
+      "clubName": "무신사",
+      "profit": "-1.8",
+      "id": "8",
+      "imgId": "005930"
+    },
+    {
+      "no": 10,
+      "clubName": "현대자동차",
+      "profit": "-3.4",
+      "id": "9",
+      "imgId": "005930"
+    }
+  ]
+}

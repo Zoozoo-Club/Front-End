@@ -1,0 +1,6 @@
+.line {
+  transition: transform 0.3s ease-out;
+}
+.move-right {
+  transform: translateX(100%); /* X축으로 100% 이동하여 오른쪽으로 이동 */
+}
