@@ -1,6 +1,7 @@
 import React from "react";
 import { IPost } from "./page";
 import Avatar from "boring-avatars";
+import { IoEyeOutline } from "react-icons/io5";
 /**
  * 
  * export interface IPost {
@@ -31,9 +32,12 @@ export default function Post({ info }: Props) {
       </div>
       <div className="content ">
         <p className="text-lg font-medium">{info.title}</p>
-        <p className="">{info.content}</p>
+        <p className="clamp-3-lines">{info.content}</p>
       </div>
-      <div className="bottom pt-1"></div>
+      <div className="bottom pt-1 flex items-center justify-end">
+        <IoEyeOutline color={"#94a3b8"} />
+        <span className="pl-1 text-sm text-slate-400">{info.pv}</span>
+      </div>
     </div>
   );
 }

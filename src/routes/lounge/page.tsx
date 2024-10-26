@@ -18,7 +18,8 @@ const dummyData: IPost[] = [
   {
     userName: "yeaha",
     title: "안녕하세요 제목1",
-    content: "내용내용",
+    content:
+      "내용내용 내용내용 내용내용 내용내용 내용내용 내용내용 내용내용 내용내용 내용내용 내용내용 내용내용 내용내용 내용내용 내용내용 내용내용 내용내용 내용내용 내용내용",
     pv: 1,
     userId: 1,
     clubId: 1,
@@ -35,6 +36,28 @@ const dummyData: IPost[] = [
     clubId: 1,
     clubName: "삼성전자",
     createdAt: "2024-10-25",
+    updatedAt: "",
+  },
+  {
+    userName: "sooya",
+    title: "안녕하세요 제목3",
+    content: "내용내용",
+    pv: 1,
+    userId: 1,
+    clubId: 1,
+    clubName: "삼성전자",
+    createdAt: "2024-10-21",
+    updatedAt: "",
+  },
+  {
+    userName: "sooya",
+    title: "안녕하세요 제목3",
+    content: "내용내용",
+    pv: 1,
+    userId: 1,
+    clubId: 1,
+    clubName: "삼성전자",
+    createdAt: "2024-10-21",
     updatedAt: "",
   },
   {

@@ -6,11 +6,10 @@ type Props = {
   tab: string;
   data: IPost[];
 };
-export default function Board({ tab, data }: Props) {
+export default function Board({ data }: Props) {
   return (
     <div>
-      {tab}
-      <div className="search px-2">
+      <div className="search px-2 pt-4">
         <SearchBar placeholder={"글 검색"} />
         {data &&
           data.map((item, idx) => {

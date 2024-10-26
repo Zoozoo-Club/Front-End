@@ -10,7 +10,10 @@ export default function Top3Item({ name, profit, color, price }: Props) {
   return (
     <div className="top3-item flex justify-between pb-4">
       <div className="left flex items-center">
-        <div className={`w-4 h-4 rounded bg-[#${color}] inline-block`}></div>
+        <div
+          className={`w-4 h-4 rounded inline-block`}
+          style={{ background: `#${color}` }}
+        ></div>
         <div className="pl-3">
           <p className="leading-none pb-1">{name}</p>
           <p className="text-slate-400 font-light text-sm leading-none">
