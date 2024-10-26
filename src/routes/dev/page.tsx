@@ -5,6 +5,7 @@ import LineChart from './components/LineChart';
 import { useCommonModalStore, useLoginModalStore } from '@/store/store';
 import productsAPI from '@/apis/productsAPI';
 import followsAPI from '@/apis/followsAPI';
+import postsAPI from '@/apis/postsAPI';
 //테스트용 페이지
 export default function Dev() {
   const { closeModal, openModal } = useCommonModalStore();
@@ -99,11 +100,27 @@ export default function Dev() {
       }
     }
 
+    async function fetchPosts() {
+      const posts = new postsAPI();
+      try {
+        console.log('전체포스트 가져오기중...');
+        const publicPosts = await posts.public();
+        console.log('전체 포스트:', publicPosts);
+
+        console.log('내 클럽 포스트 가져오기중...');
+        const clubPosts = await posts.myClub();
+        console.log('내 클럽 포스트:', clubPosts);
+      } catch (error) {
+        console.log('포스트 가져오기 실패: ', error);
+      }
+    }
+
     fetchProducts();
     fetchFollows();
     testFollowUnfollow();
     testTargetUserFollows();
     testTargetUserFollowsStatus();
+    fetchPosts();
   }, []);
   return (
     <div>
