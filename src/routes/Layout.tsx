@@ -1,9 +1,5 @@
-import { useEffect } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import IconSetting from "@/assets/icon-setting.svg?react";
-import IconMenu from "/public/icon-menu.webp";
-import { useEffect } from "react";
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import IconMenu from "/public/icon-menu.webp";
 import {
   useAuthStore,
@@ -26,8 +22,6 @@ export default function Layout() {
     }
     navigate(path);
   };
-
-  useEffect(() => {}, []);
 
   return (
     <div className="w-full h-full overflow-x-hidden overflow-y-scroll">
