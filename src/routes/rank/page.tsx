@@ -21,6 +21,11 @@ export default function Rank() {
     setSelectedMenu('rank');
   };
   const onInfo = () => {
+    if (!token) {
+      setNextUrl('/rank'); // 현재 페이지에서 info 탭으로 돌아오도록
+      openLoginModal();
+      return;
+    }
     setSelectedMenu('info');
   };
   const handleBack = () => {
