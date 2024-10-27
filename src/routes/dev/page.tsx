@@ -7,6 +7,7 @@ import productsAPI from '@/apis/productsAPI';
 import followsAPI from '@/apis/followsAPI';
 import postsAPI from '@/apis/postsAPI';
 import clubAPI from '@/apis/clubAPI';
+import rankingAPI from '@/apis/rankingAPI';
 //테스트용 페이지
 export default function Dev() {
   const { closeModal, openModal } = useCommonModalStore();
@@ -135,6 +136,40 @@ export default function Dev() {
         console.log('클럽 실시간가격 가져오기 실패: ', error);
       }
     }
+
+    async function fetchAllRanking() {
+      const ranking = new rankingAPI();
+      try {
+        console.log('####모든 클럽 랭킹 가져오는 중...(참여자순)');
+        const allClubRankingByUser = await ranking.allClubRankingByUser();
+        console.log('####모든 클럽 랭킹 가져오는 중...(투자금액순)');
+        const allClubRankingByUserByAmount =
+          await ranking.allClubRankingByUserByAmount();
+        console.log('####모든 클럽 랭킹 가져오는 중...(ROI순)');
+        const allClubRankingByUserByROI =
+          await ranking.allClubRankingByUserByROI();
+        console.log('모든 클럽 랭킹(참여자순): ', allClubRankingByUser);
+        console.log('모든 클럽 랭킹(ROI): ', allClubRankingByUserByROI);
+        console.log(
+          '모든 클럽 랭킹(투자금액순): ',
+          allClubRankingByUserByAmount
+        );
+      } catch (error) {
+        console.log('모든 클럽 랭킹 가져오기 실패: ', error);
+      }
+    }
+
+    async function fetchTargetClubRanking(targetClubId: number) {
+      const ranking = new rankingAPI();
+      try {
+        console.log(`${targetClubId} 클럽 랭킹 가져오는 중`);
+        const targetClubRanking = await ranking.targetClubRanking(targetClubId);
+        console.log(`${targetClubId} 클럽 랭킹: `, targetClubRanking);
+      } catch (error) {
+        console.log('클럽 실시간가격 가져오기 실패: ', error);
+      }
+    }
+
     fetchProducts();
     fetchFollows();
     testFollowUnfollow(105);
@@ -143,6 +178,8 @@ export default function Dev() {
     fetchPosts();
     fetchClubInfo(1);
     fetchClubCurrentPrice(1);
+    fetchAllRanking();
+    fetchTargetClubRanking(2);
   }, []);
   return (
     <div>
