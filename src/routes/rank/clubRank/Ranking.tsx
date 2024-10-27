@@ -1,6 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import dummyRank from "@/dummy/dummyRank.json";
 import RankItem from "./RankItem";
+import rankingAPI from "@/apis/rankingAPI";
+import useSWR from "swr";
+import { IAllClubRankingInfoRes } from "@/apis/types";
+import { useNavigate } from "react-router-dom";
 interface IRankInfo {
   no: number;
   clubName: string;
@@ -10,20 +14,62 @@ interface IRankInfo {
 }
 type RankType = "profit" | "assets" | "headCount";
 export default function Ranking() {
-  const [data, setData] = useState<IRankInfo[]>(dummyRank.clubRank);
+  const [data, setData] = useState<IAllClubRankingInfoRes[]>([]);
   const [activeType, setActiveType] = useState<RankType>("profit");
+  const navigate = useNavigate();
+  // API 호출해서 데이터 겟
+  const service = useMemo(() => new rankingAPI(), []);
+  // 참여자
+  const {
+    data: userRankData,
+    error: userRankError,
+    isLoading: loading1,
+  } = useSWR<IAllClubRankingInfoRes[]>("rank-by-user", () =>
+    service.allClubRankingByUser()
+  );
+  // 투자금액
+  const {
+    data: amountRankData,
+    error: amountRankError,
+    isLoading: loading2,
+  } = useSWR<IAllClubRankingInfoRes[]>("rank-by-amount", () =>
+    service.allClubRankingByUserByAmount()
+  );
+  // 수익률
+  const {
+    data: roiRankData,
+    error: roiRankError,
+    isLoading: loading3,
+  } = useSWR<IAllClubRankingInfoRes[]>("rank-by-roi", () =>
+    service.allClubRankingByUserByROI()
+  );
 
   useEffect(() => {
+    // if (loading1 || loading2 || loading3) return;
+    // if (roiRankError || amountRankError || userRankError) return;
+    if (!roiRankData || !amountRankData || !userRankData) return;
+
     if (activeType === "profit") {
-      setData(dummyRank.clubRank);
+      setData(roiRankData);
     }
     if (activeType === "assets") {
-      setData(dummyRank.clubRank);
+      setData(amountRankData);
     }
     if (activeType === "headCount") {
-      setData(dummyRank.clubRank);
+      setData(userRankData);
     }
   }, [activeType]);
+  if (loading1 || loading2 || loading3) {
+    return (
+      <div>
+        <p>loading...</p>
+      </div>
+    );
+  }
+  if (roiRankError || amountRankError || userRankError) {
+    navigate("/error");
+  }
+
   return (
     <div>
       <div className="flex gap-2 p-3">

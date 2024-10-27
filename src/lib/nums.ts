@@ -5,3 +5,13 @@ export function formatNumber(value: number, digit: number = 0) {
     maximumFractionDigits: digit,
   }).format(value);
 }
+
+export function truncateToTwoDecimals(num: number) {
+  return Math.floor(num * 100) / 100;
+}
+
+export function truncateToEok(num: number) {
+  const eokValue = Math.floor(num / 1e8);
+  // '억원' 문자열을 붙여서 반환
+  return `${eokValue}억원`;
+}

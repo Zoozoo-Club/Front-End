@@ -1,9 +1,11 @@
 import HeaderNav from "@/components/HeaderNav";
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Menu from "./Menu";
 import Ranking from "./Ranking";
 import ClubInfo from "./ClubInfo";
+import rankingAPI from "@/apis/rankingAPI";
+import useSWR from "swr";
 
 export default function ClubRank() {
   const { id } = useParams(); // URL에서 id를 추출

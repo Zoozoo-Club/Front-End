@@ -71,12 +71,13 @@ export interface IClubZooZooInfoRes {
 }
 
 export interface IAllClubRankingInfoRes {
-  clubId?: number | null;
-  clubName?: string | null;
-  profitValue?: number | null;
-  roi?: number | null;
-  totalAmount?: number | null;
-  userCount?: number | null;
+  clubId: number;
+  clubName: string;
+  profitValue: number; //수익 금액
+  roi: number; //퍼센트
+  totalAmount: number; //총액
+  userCount: number; //학생수
+  code?: string | null;
 }
 
 export interface IAssetInfoRes {
