@@ -62,12 +62,9 @@ export default function Ranking() {
         {data &&
           data.map((item, idx) => {
             return (
-              <>
+              <div key={idx}>
                 {idx !== 0 && (
-                  <div
-                    className="line bg-slate-200 h-[1px] w-full"
-                    key={idx}
-                  ></div>
+                  <div className="line bg-slate-200 h-[1px] w-full"></div>
                 )}
                 <RankItem
                   key={`${item.id}-${idx}`}
@@ -78,7 +75,7 @@ export default function Ranking() {
                   id={item.id}
                   imgId={item.imgId}
                 />
-              </>
+              </div>
             );
           })}
       </div>
