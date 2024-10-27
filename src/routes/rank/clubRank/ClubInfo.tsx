@@ -14,6 +14,7 @@ type Props = {
 };
 export default function ClubInfo({ infos, id }: Props) {
   const navigate = useNavigate();
+
   const goToExternalSite = (url: string | undefined) => {
     if (url) window.location.href = "https://" + url;
   };
@@ -63,7 +64,7 @@ export default function ClubInfo({ infos, id }: Props) {
               src={`${VITE_STOCK_IMG_URL}${infos.companyInfo.logoId}${VITE_STOCK_IMG_URLB}`}
               alt={`${"club"}-logo`}
             />
-            <p className="text-lg font-semibold">{"삼성전자"}</p>
+            <p className="text-lg font-semibold">{data?.name}</p>
           </div>
           <div className="right">
             {data && (
