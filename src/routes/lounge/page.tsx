@@ -1,8 +1,14 @@
-import HeaderNav from "@/components/HeaderNav";
-import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
-import Board from "./Board";
-import Menu from "./Menu";
+import HeaderNav from '@/components/HeaderNav';
+import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import Board from './Board';
+import Menu from './Menu';
+import {
+  useAuthStore,
+  useLoginModalStore,
+  useNextUrlStore,
+} from '@/store/store';
+
 export interface IPost {
   userName: string;
   title: string;
@@ -16,86 +22,97 @@ export interface IPost {
 }
 const dummyData: IPost[] = [
   {
-    userName: "yeaha",
-    title: "안녕하세요 제목1",
+    userName: 'yeaha',
+    title: '안녕하세요 제목1',
     content:
-      "내용내용 내용내용 내용내용 내용내용 내용내용 내용내용 내용내용 내용내용 내용내용 내용내용 내용내용 내용내용 내용내용 내용내용 내용내용 내용내용 내용내용 내용내용",
+      '내용내용 내용내용 내용내용 내용내용 내용내용 내용내용 내용내용 내용내용 내용내용 내용내용 내용내용 내용내용 내용내용 내용내용 내용내용 내용내용 내용내용 내용내용',
     pv: 1,
     userId: 1,
     clubId: 1,
-    clubName: "삼성전자",
-    createdAt: "2024-10-26",
-    updatedAt: "",
+    clubName: '삼성전자',
+    createdAt: '2024-10-26',
+    updatedAt: '',
   },
   {
-    userName: "soya",
-    title: "안녕하세요 제목2",
-    content: "내용내용",
+    userName: 'soya',
+    title: '안녕하세요 제목2',
+    content: '내용내용',
     pv: 1,
     userId: 1,
     clubId: 1,
-    clubName: "삼성전자",
-    createdAt: "2024-10-25",
-    updatedAt: "",
+    clubName: '삼성전자',
+    createdAt: '2024-10-25',
+    updatedAt: '',
   },
   {
-    userName: "sooya",
-    title: "안녕하세요 제목3",
-    content: "내용내용",
+    userName: 'sooya',
+    title: '안녕하세요 제목3',
+    content: '내용내용',
     pv: 1,
     userId: 1,
     clubId: 1,
-    clubName: "삼성전자",
-    createdAt: "2024-10-21",
-    updatedAt: "",
+    clubName: '삼성전자',
+    createdAt: '2024-10-21',
+    updatedAt: '',
   },
   {
-    userName: "sooya",
-    title: "안녕하세요 제목3",
-    content: "내용내용",
+    userName: 'sooya',
+    title: '안녕하세요 제목3',
+    content: '내용내용',
     pv: 1,
     userId: 1,
     clubId: 1,
-    clubName: "삼성전자",
-    createdAt: "2024-10-21",
-    updatedAt: "",
+    clubName: '삼성전자',
+    createdAt: '2024-10-21',
+    updatedAt: '',
   },
   {
-    userName: "sooya",
-    title: "안녕하세요 제목3",
-    content: "내용내용",
+    userName: 'sooya',
+    title: '안녕하세요 제목3',
+    content: '내용내용',
     pv: 1,
     userId: 1,
     clubId: 1,
-    clubName: "삼성전자",
-    createdAt: "2024-10-21",
-    updatedAt: "",
+    clubName: '삼성전자',
+    createdAt: '2024-10-21',
+    updatedAt: '',
   },
 ];
 
 export default function Lounge() {
   const navigate = useNavigate();
-  const [selectedMenu, setSelectedMenu] = useState<"all" | "mine">("all");
+  const [selectedMenu, setSelectedMenu] = useState<'all' | 'mine'>('all');
+
   const [data, setData] = useState<IPost[]>([]); //showing 게시물
+
+  const token = useAuthStore((state) => state.token);
+  const openLoginModal = useLoginModalStore((state) => state.openModal);
+  const setNextUrl = useNextUrlStore((state) => state.setNextUrl);
+
   const onAll = () => {
-    setSelectedMenu("all");
+    setSelectedMenu('all');
   };
   const onMine = () => {
-    setSelectedMenu("mine");
+    if (!token) {
+      setNextUrl('/lounge');
+      openLoginModal();
+      return;
+    }
+    setSelectedMenu('mine');
   };
   const handleBack = () => {
     // /rank -> / , /rank/detail?club= -> /rank
-    navigate("/");
+    navigate('/');
   };
   const goToRank = () => {
-    navigate("/rank");
+    navigate('/rank');
   };
   useEffect(() => {
     setData(dummyData);
   }, []);
   return (
     <>
-      <HeaderNav title={"주주클럽 라운지"} backBtn={handleBack}>
+      <HeaderNav title={'주주클럽 라운지'} backBtn={handleBack}>
         <div
           className="btn text-sm bg-[#CBD9FF] p-1 px-3 rounded-full mr-1"
           onClick={goToRank}

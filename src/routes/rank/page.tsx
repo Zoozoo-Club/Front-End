@@ -1,7 +1,7 @@
 import HeaderNav from "@/components/HeaderNav";
 import { useNavigate } from "react-router-dom";
 import Menu from "./Menu";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Ranking from "./Ranking";
 import ClubInfo from "./ClubInfo";
 import { useAuthCheck } from "@/hooks/useRequireAuth";
@@ -16,29 +16,36 @@ export default function Rank() {
   const token = useAuthStore((state) => state.token);
   const openLoginModal = useLoginModalStore((state) => state.openModal);
   const setNextUrl = useNextUrlStore((state) => state.setNextUrl);
+  const { nextUrl, tab } = useNextUrlStore();
   const [selectedMenu, setSelectedMenu] = useState<"rank" | "info">("rank");
-
+  useEffect(() => {
+    if (token && nextUrl === "/rank" && tab === "info") {
+      setSelectedMenu("info");
+      setNextUrl(null); // nextUrl과 tab 초기화
+    }
+  }, [token, nextUrl, tab]);
   const onRank = () => {
     setSelectedMenu("rank");
   };
   const onInfo = () => {
     if (!token) {
-      setNextUrl("/rank"); // 현재 페이지에서 info 탭으로 돌아오도록
+      setNextUrl("/rank", "info");
       openLoginModal();
-      return;
+    } else {
+      setSelectedMenu("info");
     }
-    setSelectedMenu("info");
   };
   const handleBack = () => {
+    // /rank -> / , /rank/detail?club= -> /rank
     navigate("/");
   };
   const goToLounge = () => {
     if (!token) {
-      setNextUrl("/lounge"); // 로그인 후 이동할 URL 저장
-      openLoginModal(); // 로그인 모달 열기
-      return;
+      setNextUrl("/lounge");
+      openLoginModal();
+      return; // 로그인 모달을 열고 함수 종료
     }
-    navigate("/lounge"); // 이미 로그인된 경우 바로 이동
+    navigate("/lounge");
   };
   return (
     <>
