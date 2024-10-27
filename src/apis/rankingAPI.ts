@@ -35,5 +35,6 @@ export default class rankingAPI extends BaseApi {
 
   async getMyClub() {
     const response = await this.fetcher.get(`/clubs/my-club`);
+    return response.data;
   }
 }

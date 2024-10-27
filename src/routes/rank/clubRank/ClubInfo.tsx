@@ -53,12 +53,25 @@ export default function ClubInfo({ infos, id }: Props) {
             )}
           </div>
         </div>
-        <div className="right pt-2">
-          {data && (
-            <p className="text font-semibold leading-none text-xl">
-              {formatNumber(data?.currentPrice)}원
-            </p>
-          )}
+      </div>
+      <div className="stock-container pt-4">
+        <p className="text-xl font-bold">대표 주식</p>
+        <div className="flex justify-between p-4">
+          <div className="left flex gap-4 items-center">
+            <img
+              className="w-8 h-8 rounded-xl"
+              src={`${VITE_STOCK_IMG_URL}${infos.companyInfo.logoId}${VITE_STOCK_IMG_URLB}`}
+              alt={`${"club"}-logo`}
+            />
+            <p className="text-lg font-semibold">{"삼성전자"}</p>
+          </div>
+          <div className="right">
+            {data && (
+              <p className="text font-semibold leading-none">
+                {formatNumber(data?.currentPrice)}원
+              </p>
+            )}
+          </div>
         </div>
       </div>
       <div className="club-portfolio pt-4">
@@ -101,11 +114,11 @@ export default function ClubInfo({ infos, id }: Props) {
               key={2}
             />
             <Top3Item
-              name={infos.clubPortfolio.stockHoldings[1].stockName}
-              profit={infos.clubPortfolio.stockHoldings[1].holdingRatio}
+              name={infos.clubPortfolio.stockHoldings[2].stockName}
+              profit={infos.clubPortfolio.stockHoldings[2].holdingRatio}
               color={"ffce56"}
               key={3}
-              roi={infos.clubPortfolio.stockHoldings[1].roi}
+              roi={infos.clubPortfolio.stockHoldings[2].roi}
             />
           </div>
         </div>

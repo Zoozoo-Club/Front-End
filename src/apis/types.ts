@@ -62,6 +62,7 @@ export interface IClubInfoRes {
 export interface IClubCurrentPrice {
   stockCode: string;
   currentPrice: number;
+  name: string;
 }
 
 export interface IClubZooZooInfoRes {
@@ -127,4 +128,9 @@ export interface IHoldingsRes {
   averagePrice?: number | null;
   currentPrice?: number | null;
   earningRate?: number | null;
+}
+
+export interface IMyClubRes {
+  clubId: number;
+  clubName: string;
 }

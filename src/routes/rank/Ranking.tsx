@@ -1,20 +1,20 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import dummyRank from '@/dummy/dummyRank.json';
-import RankItem from './RankItem';
-import { useNavigate } from 'react-router-dom';
-import useSWR from 'swr';
-import { IAllClubRankingInfoRes } from '@/apis/types';
-import rankingAPI from '@/apis/rankingAPI';
+import React, { useEffect, useMemo, useState } from "react";
+import dummyRank from "@/dummy/dummyRank.json";
+import RankItem from "./RankItem";
+import { useNavigate } from "react-router-dom";
+import useSWR from "swr";
+import { IAllClubRankingInfoRes } from "@/apis/types";
+import rankingAPI from "@/apis/rankingAPI";
 import {
   useAuthStore,
   useLoginModalStore,
   useNextUrlStore,
-} from '@/store/store';
+} from "@/store/store";
 
-export type RankType = 'profit' | 'assets' | 'headCount';
+export type RankType = "profit" | "assets" | "headCount";
 export default function Ranking() {
   const [data, setData] = useState<IAllClubRankingInfoRes[]>([]);
-  const [activeType, setActiveType] = useState<RankType>('profit');
+  const [activeType, setActiveType] = useState<RankType>("profit");
   const token = useAuthStore((state) => state.token);
   const openLoginModal = useLoginModalStore((state) => state.openModal);
   const setNextUrl = useNextUrlStore((state) => state.setNextUrl);
@@ -26,7 +26,7 @@ export default function Ranking() {
     data: userRankData,
     error: userRankError,
     isLoading: loading1,
-  } = useSWR<IAllClubRankingInfoRes[]>('rank-by-user', () =>
+  } = useSWR<IAllClubRankingInfoRes[]>("rank-by-user", () =>
     service.allClubRankingByUser()
   );
   // 투자금액
@@ -34,7 +34,7 @@ export default function Ranking() {
     data: amountRankData,
     error: amountRankError,
     isLoading: loading2,
-  } = useSWR<IAllClubRankingInfoRes[]>('rank-by-amount', () =>
+  } = useSWR<IAllClubRankingInfoRes[]>("rank-by-amount", () =>
     service.allClubRankingByUserByAmount()
   );
   // 수익률
@@ -42,7 +42,7 @@ export default function Ranking() {
     data: roiRankData,
     error: roiRankError,
     isLoading: loading3,
-  } = useSWR<IAllClubRankingInfoRes[]>('rank-by-roi', () =>
+  } = useSWR<IAllClubRankingInfoRes[]>("rank-by-roi", () =>
     service.allClubRankingByUserByROI()
   );
   useEffect(() => {
@@ -50,13 +50,13 @@ export default function Ranking() {
     // if (roiRankError || amountRankError || userRankError) return;
     if (!roiRankData || !amountRankData || !userRankData) return;
 
-    if (activeType === 'profit') {
+    if (activeType === "profit") {
       setData(roiRankData);
     }
-    if (activeType === 'assets') {
+    if (activeType === "assets") {
       setData(amountRankData);
     }
-    if (activeType === 'headCount') {
+    if (activeType === "headCount") {
       setData(userRankData);
     }
   }, [activeType, amountRankData, roiRankData, userRankData]);
@@ -68,7 +68,7 @@ export default function Ranking() {
     );
   }
   if (roiRankError || amountRankError || userRankError) {
-    navigate('/error');
+    navigate("/error");
   }
 
   const handleRankItemClick = (clubId: string) => {
@@ -85,30 +85,30 @@ export default function Ranking() {
       <div className="flex gap-2 p-3">
         <div
           className={`btn text-xs p-1 px-2 rounded-full ${
-            activeType === 'profit' ? 'bg-[#CBD9FF]' : 'bg-slate-200'
+            activeType === "profit" ? "bg-[#CBD9FF]" : "bg-slate-200"
           }`}
           onClick={() => {
-            setActiveType('profit');
+            setActiveType("profit");
           }}
         >
           수익률
         </div>
         <div
           className={`btn text-xs p-1 px-2 rounded-full ${
-            activeType === 'assets' ? 'bg-[#CBD9FF]' : 'bg-slate-200'
+            activeType === "assets" ? "bg-[#CBD9FF]" : "bg-slate-200"
           }`}
           onClick={() => {
-            setActiveType('assets');
+            setActiveType("assets");
           }}
         >
           투자총액
         </div>
         <div
           className={`btn text-xs p-1 px-2 rounded-full ${
-            activeType === 'headCount' ? 'bg-[#CBD9FF]' : 'bg-slate-200'
+            activeType === "headCount" ? "bg-[#CBD9FF]" : "bg-slate-200"
           }`}
           onClick={() => {
-            setActiveType('headCount');
+            setActiveType("headCount");
           }}
         >
           참여자 수

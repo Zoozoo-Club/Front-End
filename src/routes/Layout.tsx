@@ -1,6 +1,4 @@
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import IconSetting from "@/assets/icon-setting.svg?react";
-import IconMenu from "/public/icon-menu.webp";
+import { Outlet, useNavigate } from "react-router-dom";
 import {
   useAuthStore,
   useLoginModalStore,
@@ -8,7 +6,6 @@ import {
 } from "@/store/store";
 
 export default function Layout() {
-  const location = useLocation();
   const navigate = useNavigate();
   const token = useAuthStore((state) => state.token);
   const openLoginModal = useLoginModalStore((state) => state.openModal);

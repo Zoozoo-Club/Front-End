@@ -1,4 +1,3 @@
-import React from "react";
 import ArrowRight from "@/assets/icon-arrow-right.svg?react";
 import { formatNumber } from "@/lib/nums";
 type Props = {

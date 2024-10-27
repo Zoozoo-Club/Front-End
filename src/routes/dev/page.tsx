@@ -127,6 +127,15 @@ export default function Dev() {
         console.log("클럽정보 가져오기 실패: ", error);
       }
     }
+    async function fetchMy() {
+      const club = new clubAPI();
+      try {
+        const res = await club.getMyClub();
+        console.log("내클럽!!:", res);
+      } catch (error) {
+        console.log("error", error);
+      }
+    }
     async function fetchClubCurrentPrice(clubId: number) {
       const club = new clubAPI();
       try {
@@ -223,6 +232,7 @@ export default function Dev() {
     testTargetUserFollowsStatus(2);
     fetchPosts();
     fetchClubInfo(1);
+    fetchMy();
     fetchClubCurrentPrice(1);
     fetchAllRanking();
     fetchTargetClubRanking(2);
