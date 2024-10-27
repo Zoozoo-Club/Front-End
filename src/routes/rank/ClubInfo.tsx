@@ -3,9 +3,44 @@ import { useLoginModalStore } from "@/store/store";
 import ArrowRight from "@/assets/icon-arrow-right.svg?react";
 import React from "react";
 import Top3Item from "./Top3Item";
+import RecommendItem from "./RecommendItem";
+
+interface IRecommendBond {
+  profit: number;
+  name: string;
+  category: string;
+  risk: number;
+  url?: string;
+}
+//수익률이 클럽 수익률보다 높은것 중 안전순위가 높은 순으로 3개정도 노출
+//판매 중개 장외
+const dummyRe: IRecommendBond[] = [
+  {
+    profit: 14.15,
+    name: "미국국채(50)",
+    category: "해외(판매)",
+    risk: 5,
+    url: "www.naver.com",
+  },
+  {
+    profit: 13.15,
+    name: "미국국채(50)",
+    category: "해외(판매)",
+    risk: 4,
+    url: "www.naver.com",
+  },
+  {
+    profit: 10.15,
+    name: "미국국채(50)",
+    category: "해외(판매)",
+    risk: 4,
+    url: "www.naver.com",
+  },
+];
 const { VITE_STOCK_IMG_URL, VITE_STOCK_IMG_URLB } = import.meta.env;
 export default function ClubInfo() {
   const { openModal } = useLoginModalStore();
+
   return (
     <div className="p-3">
       {/* <button onClick={() => openModal()}>로그인!</button> */}
@@ -78,8 +113,21 @@ export default function ClubInfo() {
           </div>
         </div>
       </div>
-      <div className="recommand p-4">
-        <p className="text-xl font-semibold pb-4">신한의 추천 상품</p>
+      <div className="recommend">
+        <p className="text-xl font-semibold pb-4 pl-2">신한의 추천 상품</p>
+        <div className="recommend-container flex gap-2">
+          {dummyRe.map((value) => {
+            return (
+              <RecommendItem
+                profit={value.profit}
+                name={value.name}
+                category={value.category}
+                risk={value.risk}
+                url={value.url}
+              />
+            );
+          })}
+        </div>
       </div>
     </div>
   );
