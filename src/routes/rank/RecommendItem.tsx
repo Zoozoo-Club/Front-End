@@ -50,7 +50,6 @@ export default function RecommendItem({
     <div
       className="bg-[#f4f6f9] rounded-lg h-36 w-32 p-2 flex flex-col items-start"
       onClick={() => {
-        console.log("g2", url);
         if (url) goToExternalSite(url);
       }}
     >
