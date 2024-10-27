@@ -1,11 +1,11 @@
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import IconSetting from "@/assets/icon-setting.svg?react";
-import IconMenu from "/public/icon-menu.webp";
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import IconSetting from '@/assets/icon-setting.svg?react';
+import IconMenu from '/public/icon-menu.webp';
 import {
   useAuthStore,
   useLoginModalStore,
   useNextUrlStore,
-} from "@/store/store";
+} from '@/store/store';
 
 export default function Layout() {
   const location = useLocation();
@@ -15,7 +15,7 @@ export default function Layout() {
   const setNextUrl = useNextUrlStore((state) => state.setNextUrl);
 
   const handleNavigate = (path: string) => {
-    if (path === "/profile" && !token) {
+    if (path === '/profile' && !token) {
       setNextUrl(path);
       openLoginModal();
       return;
@@ -28,7 +28,7 @@ export default function Layout() {
       <div className="fixed w-full h-full overflow-hidden z-0">
         <div
           className="bg-cover bg-center w-full h-full fixed z-[-1]"
-          style={{ backgroundImage: "url('/images/zoozooClub.jpg')" }}
+          style={{ backgroundImage: "url('/images/bg.jpg')" }}
         ></div>
       </div>
       <div className="max-w-xl w-xl h-screen-small relative z-1 m-auto flex flex-col items-center justify-between gap-6">
@@ -42,7 +42,7 @@ export default function Layout() {
             </p> */}
             <p
               className="flex-1 leading-snug text-sm"
-              onClick={() => navigate("/rank")}
+              onClick={() => navigate('/rank')}
             >
               주주클럽
               <br />
@@ -50,13 +50,13 @@ export default function Layout() {
             </p>
             <p
               className="flex-1 leading-snug"
-              onClick={() => handleNavigate("/profile")}
+              onClick={() => handleNavigate('/profile')}
             >
               프로필
             </p>
             <p
               className="flex-1 leading-snug text-sm"
-              onClick={() => navigate("/lounge")}
+              onClick={() => navigate('/lounge')}
             >
               주주클럽 <br />
               라운지
