@@ -6,7 +6,15 @@ import {
   ICommonModalStore,
   ILoginModalStore,
 } from './types';
+
 // 요일별 메시지 정의
+export const useNextUrlStore = create<{
+  nextUrl: string | null;
+  setNextUrl: (url: string | null) => void;
+}>((set) => ({
+  nextUrl: null,
+  setNextUrl: (url: string | null) => set({ nextUrl: url }),
+}));
 const dailyMessages: Record<string, string> = {
   월: '월! 월스트릿 프로처럼 신투와 함께해요!',
   화: '화! 화제의 종목을 신투에서 찾아봐요!',
@@ -58,11 +66,17 @@ export const useAuthStore = create(
       login: (nickname: string, token: string) => {
         set({ nickname, token });
         useLoginModalStore.getState().closeModal();
+
         useCommonModalStore
           .getState()
           .openModal('로그인 성공', getDailyMessage(), () =>
             useCommonModalStore.getState().closeModal()
           );
+        const nextUrl = useNextUrlStore.getState().nextUrl;
+        if (nextUrl) {
+          window.location.href = nextUrl;
+          useNextUrlStore.getState().setNextUrl(null); // 이동 후 초기화
+        }
       },
       logout: () => set({ nickname: null, token: null }),
     }),
