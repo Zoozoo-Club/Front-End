@@ -58,3 +58,23 @@ export interface IClubInfoRes {
   companyInfo?: ICompanyInfo | null;
   clubPortfolio?: IClubPortfolio | null;
 }
+
+export interface IClubCurrentPrice {
+  stockCode?: string | null;
+  currentPrice?: number | null;
+}
+
+export interface IClubZooZooInfoRes {
+  userId?: number | null;
+  nickname?: string | null;
+  roi?: number | null;
+}
+
+export interface IAllClubRankingInfoRes {
+  clubId?: number | null;
+  clubName?: string | null;
+  profitValue?: number | null;
+  roi?: number | null;
+  totalAmount?: number | null;
+  userCount?: number | null;
+}
