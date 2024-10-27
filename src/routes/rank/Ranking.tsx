@@ -64,9 +64,13 @@ export default function Ranking() {
             return (
               <>
                 {idx !== 0 && (
-                  <div className="line bg-slate-200 h-[1px] w-full"></div>
+                  <div
+                    className="line bg-slate-200 h-[1px] w-full"
+                    key={idx}
+                  ></div>
                 )}
                 <RankItem
+                  key={`${item.id}-${idx}`}
                   onClick={() => {}}
                   no={item.no}
                   name={item.clubName}
