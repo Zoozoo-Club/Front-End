@@ -8,6 +8,7 @@ import followsAPI from '@/apis/followsAPI';
 import postsAPI from '@/apis/postsAPI';
 import clubAPI from '@/apis/clubAPI';
 import rankingAPI from '@/apis/rankingAPI';
+import assetAPI from '@/apis/assetAPI';
 //테스트용 페이지
 export default function Dev() {
   const { closeModal, openModal } = useCommonModalStore();
@@ -170,6 +171,51 @@ export default function Dev() {
       }
     }
 
+    async function fetchAssetInfo() {
+      const asset = new assetAPI();
+      try {
+        console.log('자산정보 가져오는 중');
+        const myAsset = await asset.myAsset();
+        console.log(`내 자산 : `, myAsset);
+      } catch (error) {
+        console.log('내 자산 가져오기 실패: ', error);
+      }
+    }
+    async function fetchTargetAssetInfo(targetUserId) {
+      const asset = new assetAPI();
+      try {
+        console.log(`${targetUserId} 자산정보 가져오는 중`);
+        const targetUserAsset = await asset.targetUserAsset(targetUserId);
+        console.log(`${targetUserId} 자산 : `, targetUserAsset);
+      } catch (error) {
+        console.log(`${targetUserId} 자산 가져오기 실패: `, error);
+      }
+    }
+
+    async function fetchMyHoldings() {
+      const holdings = new assetAPI();
+      try {
+        console.log(`내 보유 종목 가져오는 중`);
+        const myHoldings = await holdings.myHoldings();
+        console.log(`내 보유 종목 : `, myHoldings);
+      } catch (error) {
+        console.log(`내 보유 종목 가져오기 실패: `, error);
+      }
+    }
+
+    async function fetchTargetUserHoldings(targetUserId: number) {
+      const holdings = new assetAPI();
+      try {
+        console.log(`${targetUserId} 가져오는 중`);
+        const targetUserHoldings = await holdings.targetUserHoldings(
+          targetUserId
+        );
+        console.log(`${targetUserId} : `, targetUserHoldings);
+      } catch (error) {
+        console.log(`${targetUserId} 가져오기 실패: `, error);
+      }
+    }
+
     fetchProducts();
     fetchFollows();
     testFollowUnfollow(105);
@@ -180,6 +226,10 @@ export default function Dev() {
     fetchClubCurrentPrice(1);
     fetchAllRanking();
     fetchTargetClubRanking(2);
+    fetchAssetInfo();
+    fetchTargetAssetInfo(1);
+    fetchMyHoldings();
+    fetchTargetUserHoldings(1);
   }, []);
   return (
     <div>
