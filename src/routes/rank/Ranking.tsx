@@ -109,7 +109,9 @@ export default function Ranking() {
                 )}
                 <RankItem
                   key={`${item.clubId}-${idx}`}
-                  onClick={() => {}}
+                  onClick={() => {
+                    navigate(`club-rank/${item.clubId}`);
+                  }}
                   no={idx + 1}
                   name={item.clubName}
                   profit={item.roi}
