@@ -1,4 +1,5 @@
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { useEffect } from "react";
 import { Doughnut } from "react-chartjs-2";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
@@ -21,8 +22,13 @@ export const data = {
     },
   ],
 };
-
-export default function ChartPortfolio() {
+type Props = {
+  ratios: number[]; //6자리
+};
+export default function ChartPortfolio({ ratios }: Props) {
+  useEffect(() => {
+    data.datasets[0].data = ratios;
+  }, []);
   return (
     <div className="">
       <Doughnut data={data} />

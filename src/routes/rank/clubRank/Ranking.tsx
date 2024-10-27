@@ -30,7 +30,7 @@ export default function Ranking({ id }: { id: string }) {
     <div>
       <div className="rank-container mx-4 my-2 rounded-lg shadow-lg border border-slate-100 shadow-slate-200 px-4 py-2">
         {data &&
-          data.map((item, idx) => {
+          data.slice(0, 99).map((item, idx) => {
             return (
               <div key={idx}>
                 {idx !== 0 && (

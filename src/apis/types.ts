@@ -55,19 +55,19 @@ export interface ICompanyInfo {
   websiteUrl?: string;
 }
 export interface IClubInfoRes {
-  companyInfo?: ICompanyInfo | null;
-  clubPortfolio?: IClubPortfolio | null;
+  companyInfo?: ICompanyInfo;
+  clubPortfolio?: IClubPortfolio;
 }
 
 export interface IClubCurrentPrice {
-  stockCode?: string | null;
-  currentPrice?: number | null;
+  stockCode: string;
+  currentPrice: number;
 }
 
 export interface IClubZooZooInfoRes {
-  userId?: number | null;
-  nickname?: string | null;
-  roi?: number | null;
+  userId: number;
+  nickname: string;
+  roi: number;
 }
 
 export interface IAllClubRankingInfoRes {
