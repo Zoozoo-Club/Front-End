@@ -1,109 +1,33 @@
 import React, { useEffect, useMemo, useState } from "react";
-import dummyRank from "@/dummy/dummyRank.json";
-import RankItem from "./RankItem";
 import rankingAPI from "@/apis/rankingAPI";
 import useSWR from "swr";
-import { IAllClubRankingInfoRes } from "@/apis/types";
+import { IClubZooZooInfoRes } from "@/apis/types";
 import { useNavigate } from "react-router-dom";
-interface IRankInfo {
-  no: number;
-  clubName: string;
-  profit: string;
-  id: string;
-  imgId: string;
-}
-type RankType = "profit" | "assets" | "headCount";
-export default function Ranking() {
-  const [data, setData] = useState<IAllClubRankingInfoRes[]>([]);
-  const [activeType, setActiveType] = useState<RankType>("profit");
+import RankItem from "./RankItem";
+
+export default function Ranking({ id }: { id: string }) {
   const navigate = useNavigate();
   // API 호출해서 데이터 겟
   const service = useMemo(() => new rankingAPI(), []);
   // 참여자
-  const {
-    data: userRankData,
-    error: userRankError,
-    isLoading: loading1,
-  } = useSWR<IAllClubRankingInfoRes[]>("rank-by-user", () =>
-    service.allClubRankingByUser()
-  );
-  // 투자금액
-  const {
-    data: amountRankData,
-    error: amountRankError,
-    isLoading: loading2,
-  } = useSWR<IAllClubRankingInfoRes[]>("rank-by-amount", () =>
-    service.allClubRankingByUserByAmount()
-  );
-  // 수익률
-  const {
-    data: roiRankData,
-    error: roiRankError,
-    isLoading: loading3,
-  } = useSWR<IAllClubRankingInfoRes[]>("rank-by-roi", () =>
-    service.allClubRankingByUserByROI()
+  const { data, error, isLoading } = useSWR<IClubZooZooInfoRes[]>(
+    "club-rank",
+    () => service.targetClubRanking(+id)
   );
 
-  useEffect(() => {
-    // if (loading1 || loading2 || loading3) return;
-    // if (roiRankError || amountRankError || userRankError) return;
-    if (!roiRankData || !amountRankData || !userRankData) return;
-
-    if (activeType === "profit") {
-      setData(roiRankData);
-    }
-    if (activeType === "assets") {
-      setData(amountRankData);
-    }
-    if (activeType === "headCount") {
-      setData(userRankData);
-    }
-  }, [activeType]);
-  if (loading1 || loading2 || loading3) {
+  if (isLoading) {
     return (
       <div>
         <p>loading...</p>
       </div>
     );
   }
-  if (roiRankError || amountRankError || userRankError) {
+  if (error) {
     navigate("/error");
   }
 
   return (
     <div>
-      <div className="flex gap-2 p-3">
-        <div
-          className={`btn text-xs p-1 px-2 rounded-full ${
-            activeType === "profit" ? "bg-[#CBD9FF]" : "bg-slate-200"
-          }`}
-          onClick={() => {
-            setActiveType("profit");
-          }}
-        >
-          수익률
-        </div>
-        <div
-          className={`btn text-xs p-1 px-2 rounded-full ${
-            activeType === "assets" ? "bg-[#CBD9FF]" : "bg-slate-200"
-          }`}
-          onClick={() => {
-            setActiveType("assets");
-          }}
-        >
-          투자총액
-        </div>
-        <div
-          className={`btn text-xs p-1 px-2 rounded-full ${
-            activeType === "headCount" ? "bg-[#CBD9FF]" : "bg-slate-200"
-          }`}
-          onClick={() => {
-            setActiveType("headCount");
-          }}
-        >
-          참여자 수
-        </div>
-      </div>
       <div className="rank-container mx-4 my-2 rounded-lg shadow-lg border border-slate-100 shadow-slate-200 px-4 py-2">
         {data &&
           data.map((item, idx) => {
@@ -113,13 +37,12 @@ export default function Ranking() {
                   <div className="line bg-slate-200 h-[1px] w-full"></div>
                 )}
                 <RankItem
-                  key={`${item.id}-${idx}`}
+                  key={`${item.userId}-${idx}`}
                   onClick={() => {}}
-                  no={item.no}
-                  name={item.clubName}
-                  profit={item.profit}
-                  id={item.id}
-                  imgId={item.imgId}
+                  no={idx + 1}
+                  name={item.nickname}
+                  roi={item.roi}
+                  id={item.userId}
                 />
               </div>
             );

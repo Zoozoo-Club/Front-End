@@ -12,6 +12,7 @@ export default function ClubRank() {
   const navigate = useNavigate();
   const [data, setData] = useState(null);
   const [selectedMenu, setSelectedMenu] = useState<"rank" | "info">("rank");
+
   const onRank = () => {
     setSelectedMenu("rank");
   };
@@ -39,8 +40,8 @@ export default function ClubRank() {
       <div className="container flex-grow flex flex-col">
         <Menu selectedMenu={selectedMenu} onRank={onRank} onInfo={onInfo} />
         <div className="flex-grow h-96 pb-12 overflow-scroll">
-          {selectedMenu === "rank" && <Ranking />}
-          {selectedMenu === "info" && <ClubInfo />}
+          {selectedMenu === "rank" && <Ranking id={id} />}
+          {selectedMenu === "info" && <ClubInfo id={id} />}
         </div>
       </div>
     </>
