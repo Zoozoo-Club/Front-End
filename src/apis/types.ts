@@ -109,7 +109,7 @@ export interface IAssetInfoRes {
   }>;
   output2?: Array<{
     map?: {
-      pchsAmtSmtlAmt?: string | null; // 매입금액 합계
+      pchsAmtSmtlAmt: string; // 매입금액 합계
       evluPflsSmtlAmt?: string | null; // 평가손익 합계
     } | null;
     evlu_pfls_smtl_amt?: string | null; // 평가손익 합계

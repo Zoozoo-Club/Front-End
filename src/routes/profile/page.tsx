@@ -9,7 +9,7 @@ import Info from "./Info";
 export default function Profile() {
   const navigate = useNavigate();
   const isFollowing = useState<boolean>(false);
-  const [selectedMenu, setSelectedMenu] = useState<"story" | "stock">("stock");
+  const [selectedMenu, setSelectedMenu] = useState<"story" | "stock">("story");
   const onRank = () => {
     setSelectedMenu("story");
   };
