@@ -1,4 +1,4 @@
-import { BaseApi } from './baseAPI';
+import { BaseApi } from "./baseAPI";
 
 export default class clubAPI extends BaseApi {
   async info(clubId: number) {
@@ -8,6 +8,11 @@ export default class clubAPI extends BaseApi {
 
   async currentPrice(clubId: number) {
     const response = await this.fetcher.get(`/clubs/${clubId}/current`);
+    return response.data;
+  }
+
+  async getMyClub() {
+    const response = await this.fetcher.get(`/clubs/my-club`);
     return response.data;
   }
 }

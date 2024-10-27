@@ -70,6 +70,11 @@ export interface IClubZooZooInfoRes {
   roi: number;
 }
 
+export interface MyClub {
+  clubId: number;
+  clubName: string;
+}
+
 export interface IAllClubRankingInfoRes {
   clubId: number;
   clubName: string;
