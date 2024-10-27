@@ -8,9 +8,10 @@ import {
   useLoginModalStore,
   useNextUrlStore,
 } from '@/store/store';
+import postsAPI from '@/apis/postsAPI';
 
 export interface IPost {
-  userName: string;
+  nickname: string;
   title: string;
   content: string;
   pv: number;
@@ -20,85 +21,54 @@ export interface IPost {
   createdAt: string;
   updatedAt: string;
 }
-const dummyData: IPost[] = [
-  {
-    userName: 'yeaha',
-    title: '안녕하세요 제목1',
-    content:
-      '내용내용 내용내용 내용내용 내용내용 내용내용 내용내용 내용내용 내용내용 내용내용 내용내용 내용내용 내용내용 내용내용 내용내용 내용내용 내용내용 내용내용 내용내용',
-    pv: 1,
-    userId: 1,
-    clubId: 1,
-    clubName: '삼성전자',
-    createdAt: '2024-10-26',
-    updatedAt: '',
-  },
-  {
-    userName: 'soya',
-    title: '안녕하세요 제목2',
-    content: '내용내용',
-    pv: 1,
-    userId: 1,
-    clubId: 1,
-    clubName: '삼성전자',
-    createdAt: '2024-10-25',
-    updatedAt: '',
-  },
-  {
-    userName: 'sooya',
-    title: '안녕하세요 제목3',
-    content: '내용내용',
-    pv: 1,
-    userId: 1,
-    clubId: 1,
-    clubName: '삼성전자',
-    createdAt: '2024-10-21',
-    updatedAt: '',
-  },
-  {
-    userName: 'sooya',
-    title: '안녕하세요 제목3',
-    content: '내용내용',
-    pv: 1,
-    userId: 1,
-    clubId: 1,
-    clubName: '삼성전자',
-    createdAt: '2024-10-21',
-    updatedAt: '',
-  },
-  {
-    userName: 'sooya',
-    title: '안녕하세요 제목3',
-    content: '내용내용',
-    pv: 1,
-    userId: 1,
-    clubId: 1,
-    clubName: '삼성전자',
-    createdAt: '2024-10-21',
-    updatedAt: '',
-  },
-];
 
 export default function Lounge() {
   const navigate = useNavigate();
   const [selectedMenu, setSelectedMenu] = useState<'all' | 'mine'>('all');
-
+  const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<IPost[]>([]); //showing 게시물
-
+  const [isLoading, setIsLoading] = useState(false);
   const token = useAuthStore((state) => state.token);
   const openLoginModal = useLoginModalStore((state) => state.openModal);
-  const setNextUrl = useNextUrlStore((state) => state.setNextUrl);
+  const { nextUrl, tab, setNextUrl } = useNextUrlStore();
+
+  useEffect(() => {
+    if (token && nextUrl === '/lounge' && tab === 'mine') {
+      setSelectedMenu('mine');
+      setNextUrl(null); // nextUrl과 tab 초기화
+    }
+  }, [token, nextUrl, tab]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true);
+      setError(null);
+      try {
+        const posts = new postsAPI();
+        const response =
+          selectedMenu === 'all' ? await posts.public() : await posts.myClub();
+        setData(response);
+      } catch (err) {
+        console.error('Failed to fetch posts:', err);
+        setError('게시물을 불러오는데 실패했습니다.');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [selectedMenu]);
 
   const onAll = () => {
     setSelectedMenu('all');
   };
   const onMine = () => {
     if (!token) {
-      setNextUrl('/lounge');
+      setNextUrl('/lounge', 'mine');
       openLoginModal();
-      return;
+    } else {
+      setSelectedMenu('mine');
     }
-    setSelectedMenu('mine');
   };
   const handleBack = () => {
     // /rank -> / , /rank/detail?club= -> /rank
@@ -107,9 +77,7 @@ export default function Lounge() {
   const goToRank = () => {
     navigate('/rank');
   };
-  useEffect(() => {
-    setData(dummyData);
-  }, []);
+
   return (
     <>
       <HeaderNav title={'주주클럽 라운지'} backBtn={handleBack}>
