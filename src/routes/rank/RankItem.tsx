@@ -1,6 +1,5 @@
-import React from "react";
 import { RankType } from "./Ranking";
-import { formatNumber } from "@/lib/nums";
+import { truncateToEok, truncateToTwoDecimals } from "@/lib/nums";
 const { VITE_STOCK_IMG_URL, VITE_STOCK_IMG_URLB } = import.meta.env;
 
 type Props = {
@@ -42,7 +41,9 @@ export default function RankItem({
         ) : (
           <div className="w-8 h-8 inline-block bg-slate-300 rounded-xl"></div>
         )}
-        <span className="pl-3 font-semibold">{name} 클럽</span>
+        <span className="pl-3 font-semibold whitespace-nowrap truncate">
+          {name} 클럽
+        </span>
       </div>
       {type === "profit" && (
         <div
@@ -59,8 +60,8 @@ export default function RankItem({
         </div>
       )}
       {type === "assets" && (
-        <div className={`right text-xl ${"text-red-500"}`}>
-          {formatNumber(totalAmount)}
+        <div className={`right text-xl whitespace-nowrap`}>
+          {truncateToEok(totalAmount)}
         </div>
       )}
       {type === "headCount" && (
@@ -68,8 +69,4 @@ export default function RankItem({
       )}
     </div>
   );
-}
-
-function truncateToTwoDecimals(num: number) {
-  return Math.floor(num * 100) / 100;
 }
