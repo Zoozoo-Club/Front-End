@@ -4,7 +4,6 @@ import Menu from './Menu';
 import { useState } from 'react';
 import Ranking from './Ranking';
 import ClubInfo from './ClubInfo';
-import { useAuthCheck } from '@/hooks/useRequireAuth';
 import {
   useAuthStore,
   useLoginModalStore,
@@ -29,6 +28,7 @@ export default function Rank() {
     setSelectedMenu('info');
   };
   const handleBack = () => {
+    // /rank -> / , /rank/detail?club= -> /rank
     navigate('/');
   };
   const goToLounge = () => {

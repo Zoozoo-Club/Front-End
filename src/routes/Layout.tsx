@@ -45,7 +45,11 @@ export default function Layout() {
             </p>
           </div>
           <div className="w-12 h-full flex flex-col items-center justify-center bg-blue-500 text-white">
-            <img src={IconMenu} alt="메뉴 아이콘" className="w-6 h-6 mb-1" />
+            <img
+              src="/icon-menu.webp?url"
+              alt="메뉴 아이콘"
+              className="w-6 h-6 mb-1"
+            />
             <p className="text-xs">메뉴</p>
           </div>
         </div>
