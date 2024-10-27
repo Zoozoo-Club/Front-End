@@ -1,10 +1,27 @@
 import { useEffect } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
-import IconSetting from '@/assets/icon-setting.svg?react';
 import IconMenu from '/public/icon-menu.webp';
+import {
+  useAuthStore,
+  useLoginModalStore,
+  useNextUrlStore,
+} from '@/store/store';
+
 export default function Layout() {
   const location = useLocation();
   const navigate = useNavigate();
+  const token = useAuthStore((state) => state.token);
+  const openLoginModal = useLoginModalStore((state) => state.openModal);
+  const setNextUrl = useNextUrlStore((state) => state.setNextUrl);
+
+  const handleNavigate = (path: string) => {
+    if (path === '/profile' && !token) {
+      setNextUrl(path);
+      openLoginModal();
+      return;
+    }
+    navigate(path);
+  };
 
   useEffect(() => {}, []);
 
@@ -33,7 +50,7 @@ export default function Layout() {
             </p>
             <p
               className="flex-1 leading-snug"
-              onClick={() => navigate('/profile')}
+              onClick={() => handleNavigate('/profile')}
             >
               프로필
             </p>
@@ -46,7 +63,7 @@ export default function Layout() {
           </div>
           <div className="w-12 h-full flex flex-col items-center justify-center bg-blue-500 text-white">
             <img
-              src="/icon-menu.webp?url"
+              src="public/icon-menu.webp?url"
               alt="메뉴 아이콘"
               className="w-6 h-6 mb-1"
             />

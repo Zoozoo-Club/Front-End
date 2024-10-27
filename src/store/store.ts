@@ -7,14 +7,23 @@ import {
   ILoginModalStore,
 } from './types';
 
-// 요일별 메시지 정의
+interface INextUrlStore {
+  nextUrl: string | null;
+  tab: string | null;
+  setNextUrl: (url: string | null, tab?: string | null) => void;
+}
+
 export const useNextUrlStore = create<{
   nextUrl: string | null;
-  setNextUrl: (url: string | null) => void;
+  tab: string | null;
+  setNextUrl: (url: string | null, tab?: string | null) => void;
 }>((set) => ({
   nextUrl: null,
-  setNextUrl: (url: string | null) => set({ nextUrl: url }),
+  tab: null,
+  setNextUrl: (url: string | null, tab: string | null = null) =>
+    set({ nextUrl: url, tab: tab }),
 }));
+
 const dailyMessages: Record<string, string> = {
   월: '월! 월스트릿 프로처럼 신투와 함께해요!',
   화: '화! 화제의 종목을 신투에서 찾아봐요!',
@@ -65,24 +74,30 @@ export const useAuthStore = create(
       token: null,
       login: (nickname: string, token: string) => {
         set({ nickname, token });
-        useLoginModalStore.getState().closeModal();
+        useLoginModalStore.getState().closeModal(); // 로그인 모달 닫기
 
+        // 로그인 성공 모달을 열기
         useCommonModalStore
           .getState()
-          .openModal('로그인 성공', getDailyMessage(), () =>
-            useCommonModalStore.getState().closeModal()
-          );
-        const nextUrl = useNextUrlStore.getState().nextUrl;
-        if (nextUrl) {
-          window.location.href = nextUrl;
-          useNextUrlStore.getState().setNextUrl(null); // 이동 후 초기화
-        }
+          .openModal('로그인 성공', getDailyMessage(), () => {
+            useCommonModalStore.getState().closeModal();
+            // 모달이 닫힌 후에 URL 체크 및 이동
+            const { nextUrl, tab } = useNextUrlStore.getState();
+            if (nextUrl) {
+              if (nextUrl === '/rank' && tab === 'info') {
+                // rank 페이지의 info 탭으로 이동하는 경우는 리다이렉트하지 않음
+                return;
+              }
+              window.location.href = nextUrl;
+              useNextUrlStore.getState().setNextUrl(null); // nextUrl과 tab 초기화
+            }
+          });
       },
       logout: () => set({ nickname: null, token: null }),
     }),
     {
-      name: 'user-storage', // 로컬스토리지에 저장할 이름 (키)
-      getStorage: () => localStorage, // 로컬스토리지를 사용
+      name: 'user-storage',
+      getStorage: () => localStorage,
     }
   )
 );
