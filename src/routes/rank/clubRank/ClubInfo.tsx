@@ -1,7 +1,5 @@
 import ChartPortfolio from "@/components/ChartPortfolio";
-import { useLoginModalStore } from "@/store/store";
-import ArrowRight from "@/assets/icon-arrow-right.svg?react";
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import Top3Item from "../Top3Item";
 import { IClubCurrentPrice, IClubInfoRes } from "@/apis/types";
 import clubAPI from "@/apis/clubAPI";
@@ -58,7 +56,7 @@ export default function ClubInfo({ infos, id }: Props) {
         <div className="right pt-2">
           {data && (
             <p className="text font-semibold leading-none text-xl">
-              {formatNumber(data?.currentPrice)}
+              {formatNumber(data?.currentPrice)}원
             </p>
           )}
         </div>
@@ -75,32 +73,39 @@ export default function ClubInfo({ infos, id }: Props) {
         </p>
         <div className="porfolio flex flex-col gap-2 items-center">
           <div className="chart flex-1 mx-4">
-            <ChartPortfolio ratios={[30, 35, 5, 20, 5, 5]} />
+            <ChartPortfolio
+              ratios={infos.clubPortfolio.stockHoldings
+                .slice(0, 5)
+                .map((v) => v.holdingRatio)}
+              labels={infos.clubPortfolio.stockHoldings
+                .slice(0, 5)
+                .map((v) => v.stockName)}
+            />
           </div>
           <div className="stock-info flex-1 w-full p-4">
             <p className="text-xl font-semibold pb-4">
               클럽원들의 TOP3 투자종목
             </p>
             <Top3Item
-              name={"삼성전자"}
-              profit={"40.1"}
+              name={infos.clubPortfolio.stockHoldings[0].stockName}
+              profit={infos.clubPortfolio.stockHoldings[0].holdingRatio}
               color={"ff6384"}
-              price={"39000"}
+              roi={infos.clubPortfolio.stockHoldings[0].roi}
               key={1}
             />
             <Top3Item
-              name={"넥슨"}
-              profit={"21.1"}
-              color={"ff6384"}
-              price={"39000"}
+              name={infos.clubPortfolio.stockHoldings[1].stockName}
+              profit={infos.clubPortfolio.stockHoldings[1].holdingRatio}
+              color={"36a2eb"}
+              roi={infos.clubPortfolio.stockHoldings[1].roi}
               key={2}
             />
             <Top3Item
-              name={"SK하이닉스"}
-              profit={"10.9"}
-              color={"ff6384"}
+              name={infos.clubPortfolio.stockHoldings[1].stockName}
+              profit={infos.clubPortfolio.stockHoldings[1].holdingRatio}
+              color={"ffce56"}
               key={3}
-              price={"39000"}
+              roi={infos.clubPortfolio.stockHoldings[1].roi}
             />
           </div>
         </div>

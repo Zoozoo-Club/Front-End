@@ -1,9 +1,13 @@
 import ChartPortfolio from "@/components/ChartPortfolio";
 import { useLoginModalStore } from "@/store/store";
 import ArrowRight from "@/assets/icon-arrow-right.svg?react";
-import React from "react";
+import React, { useMemo } from "react";
 import Top3Item from "./Top3Item";
 import RecommendItem from "./RecommendItem";
+import { useNavigate } from "react-router-dom";
+import clubAPI from "@/apis/clubAPI";
+import useSWR from "swr";
+import { IClubCurrentPrice, MyClub } from "@/apis/types";
 
 interface IRecommendBond {
   profit: number;
@@ -39,8 +43,26 @@ const dummyRe: IRecommendBond[] = [
 ];
 const { VITE_STOCK_IMG_URL, VITE_STOCK_IMG_URLB } = import.meta.env;
 export default function ClubInfo() {
-  const { openModal } = useLoginModalStore();
+  const navigate = useNavigate();
+  const clubService = useMemo(() => new clubAPI(), []);
 
+  // API 호출해서 데이터 겟
+  const service = useMemo(() => new clubAPI(), []);
+  // 참여자
+  const { data, error, isLoading } = useSWR<IClubCurrentPrice>(
+    "club-price",
+    () => service.currentPrice(+id)
+  );
+
+  const goToExternalSite = (url: string | undefined) => {
+    if (url) window.location.href = "https://" + url;
+  };
+  if (isLoading) {
+    return <p>Loading..</p>;
+  }
+  if (error) {
+    navigate("/error");
+  }
   return (
     <div className="p-3">
       {/* <button onClick={() => openModal()}>로그인!</button> */}
@@ -82,33 +104,31 @@ export default function ClubInfo() {
           <p className="text-slate-400 font-light text-sm">오늘 14:40 기준</p>
         </p>
         <div className="porfolio flex flex-col gap-2 items-center">
-          <div className="chart flex-1 mx-4">
-            <ChartPortfolio />
-          </div>
+          <div className="chart flex-1 mx-4">{/* <ChartPortfolio /> */}</div>
           <div className="stock-info flex-1 w-full p-4">
             <p className="text-xl font-semibold pb-4">
               클럽원들의 TOP3 투자종목
             </p>
             <Top3Item
               name={"삼성전자"}
-              profit={"40.1"}
+              profit={40.1}
               color={"ff6384"}
-              price={"39000"}
+              roi={1}
               key={1}
             />
             <Top3Item
               name={"넥슨"}
-              profit={"21.1"}
+              profit={40.1}
               color={"ff6384"}
-              price={"39000"}
+              roi={1}
               key={2}
             />
             <Top3Item
               name={"SK하이닉스"}
-              profit={"10.9"}
+              profit={40.1}
               color={"ff6384"}
               key={3}
-              price={"39000"}
+              roi={1}
             />
           </div>
         </div>

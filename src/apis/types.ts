@@ -38,15 +38,15 @@ export interface IPostRes {
 
 export interface IStockHoldings {
   stockCode?: string | null;
-  stockName?: string | null;
-  holdingRatio?: number | null;
-  roi?: number | null;
+  stockName: string;
+  holdingRatio: number;
+  roi: number;
   holdingMembers?: number | null;
 }
 export interface IClubPortfolio {
-  totalMembers?: number | null;
-  totalInvestmentAmount?: number | null;
-  stockHoldings?: IStockHoldings | null;
+  totalMembers: number;
+  totalInvestmentAmount: number;
+  stockHoldings: IStockHoldings[];
 }
 export interface ICompanyInfo {
   companyId?: number;
@@ -55,8 +55,8 @@ export interface ICompanyInfo {
   websiteUrl?: string;
 }
 export interface IClubInfoRes {
-  companyInfo?: ICompanyInfo;
-  clubPortfolio?: IClubPortfolio;
+  companyInfo: ICompanyInfo;
+  clubPortfolio: IClubPortfolio;
 }
 
 export interface IClubCurrentPrice {

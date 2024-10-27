@@ -5,7 +5,14 @@ import { Doughnut } from "react-chartjs-2";
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 export const data = {
-  // labels: ["에코프로", "에코프로비엠", "POSCO홀딩스", "코스모신소재", "LG화학", "삼성전자"],
+  labels: [
+    "에코프로",
+    "에코프로비엠",
+    "POSCO홀딩스",
+    "코스모신소재",
+    "LG화학",
+    "삼성전자",
+  ],
   datasets: [
     {
       label: "비율",
@@ -22,16 +29,31 @@ export const data = {
     },
   ],
 };
+const options = {
+  plugins: {
+    legend: {
+      display: false, // 상단 라벨링(범례) 비활성화
+    },
+    tooltip: {
+      enabled: true, // 마우스 오버 시 툴팁 활성화 (기본값)
+    },
+  },
+};
 type Props = {
   ratios: number[]; //6자리
+  labels: string[];
 };
-export default function ChartPortfolio({ ratios }: Props) {
+export default function ChartPortfolio({ ratios, labels }: Props) {
   useEffect(() => {
-    data.datasets[0].data = ratios;
+    const total = ratios.reduce((a, b) => a + b);
+    const gita = 100 - total;
+    const arr = [...ratios, gita];
+    data.labels = [...labels, "기타"];
+    data.datasets[0].data = arr;
   }, []);
   return (
     <div className="">
-      <Doughnut data={data} />
+      <Doughnut data={data} options={options} />
     </div>
   );
 }

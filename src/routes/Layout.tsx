@@ -1,7 +1,7 @@
-import { useEffect } from 'react';
-import { Outlet, useLocation, useNavigate } from 'react-router-dom';
-import IconSetting from '@/assets/icon-setting.svg?react';
-import IconMenu from '/public/icon-menu.webp';
+import { useEffect } from "react";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import IconSetting from "@/assets/icon-setting.svg?react";
+import IconMenu from "/public/icon-menu.webp";
 export default function Layout() {
   const location = useLocation();
   const navigate = useNavigate();
@@ -20,28 +20,31 @@ export default function Layout() {
         <main className="flex-1 w-full h-full overflow-scroll bg-white flex flex-col">
           <Outlet />
         </main>
-        <div className="nav h-12 bg-red-50 w-full max-w-[576px] fixed bottom-0 flex items-center">
+        <div className="nav h-12 bg-white w-full max-w-[576px] fixed bottom-0 flex items-center">
           <div className="flex flex-1 gap-4 items-center text-center p-4">
-            <p className="flex-1 leading-snug" onClick={() => navigate('/')}>
+            {/* <p className="flex-1 leading-snug" onClick={() => navigate('/')}>
               커뮤니티
-            </p>
+            </p> */}
             <p
-              className="flex-1 leading-snug"
-              onClick={() => navigate('/rank')}
+              className="flex-1 leading-snug text-sm"
+              onClick={() => navigate("/rank")}
             >
-              주주클럽 랭킹
+              주주클럽
+              <br />
+              랭킹
             </p>
             <p
-              className="flex-1 leading-snug"
-              onClick={() => navigate('/profile')}
+              className="flex-1 leading-snug text-sm"
+              onClick={() => navigate("/profile")}
             >
               프로필
             </p>
             <p
-              className="flex-1 leading-snug"
-              onClick={() => navigate('/lounge')}
+              className="flex-1 leading-snug text-sm"
+              onClick={() => navigate("/lounge")}
             >
-              주주클럽 라운지
+              주주클럽 <br />
+              라운지
             </p>
           </div>
           <div className="w-12 h-full flex flex-col items-center justify-center bg-blue-500 text-white">
