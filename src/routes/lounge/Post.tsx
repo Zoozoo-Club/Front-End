@@ -1,16 +1,26 @@
 import { IPost } from "./page";
 import Avatar from "boring-avatars";
 import { IoEyeOutline } from "react-icons/io5";
+import { useNavigate } from "react-router-dom";
 
 type Props = {
   info: IPost;
 };
 export default function Post({ info }: Props) {
+  const navigate = useNavigate();
   return (
     <div className="rounded-md border border-slate-100 p-4 my-2">
       <div className="top flex pb-4">
-        <Avatar width={32} variant="beam" name={info.nickname} />
-        <div className="text-start pl-2 ">
+        <Avatar
+          width={32}
+          variant="beam"
+          name={info.nickname}
+          onClick={() => navigate(`/profile/${info.userId}`)}
+        />
+        <div
+          className="text-start pl-2 "
+          onClick={() => navigate(`/profile/${info.userId}`)}
+        >
           <p className="leading-none font-semibold">
             {info.nickname}{" "}
             <span className="text-slate-500">- {info.clubName}</span>
