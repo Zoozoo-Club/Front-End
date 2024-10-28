@@ -52,11 +52,12 @@ export default function OtherProfile() {
         setIsFollowing(true);
       }
     }
-  });
-  if (error || error2 || !id) {
+    if (nickname && nickname === data?.userName) navigate("/profile");
+  }, [follower, nickname, data]);
+  if (error || error2 || error3 || !id) {
     return <div> no id</div>;
   }
-  if (isLoading || isLoading2) {
+  if (isLoading || isLoading2 || isLoading3) {
     return <div> Loading.. </div>;
   }
 
