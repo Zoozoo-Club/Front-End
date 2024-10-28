@@ -1,64 +1,66 @@
 import HeaderNav from "@/components/HeaderNav";
 import { useEffect, useMemo, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Menu from "./Menu";
 import Avatar from "boring-avatars";
 import Story from "./Story";
 import Info from "./Info";
-import followsAPI from "@/apis/followsAPI";
-import useSWR from "swr";
-import { IFollowerRes, IFollowingRes } from "@/apis/types";
 import { useAuthStore } from "@/store/store";
-import OtherInfo from "./OtherInfo";
+import useSWR from "swr";
+import { IFollowerRes, IFollowingRes, IMyClubRes } from "@/apis/types";
+import clubAPI from "@/apis/clubAPI";
+import followsAPI from "@/apis/followsAPI";
+import Loading from "@/components/Loading";
 
-export default function OtherProfile() {
-  const { id } = useParams(); // URL에서 id를 추출
+export default function Profile() {
   const navigate = useNavigate();
-  const [isFollowing, setIsFollowing] = useState<boolean>(false);
+  const clubService = useMemo(() => new clubAPI(), []);
+  const followService = useMemo(() => new followsAPI(), []);
   const { nickname } = useAuthStore();
-  const service = useMemo(() => new followsAPI(), []);
-  if (!id) {
-    navigate("/error");
-  }
   const [selectedMenu, setSelectedMenu] = useState<"story" | "stock">("story");
+
+  // 내 팔로워/팔로잉 정보 가져오기
   const {
     data: follower,
-    isLoading,
-    error,
-  } = useSWR<IFollowerRes[] | null>("other-follower", () =>
-    id ? service.targetUserFollowers(+id) : null
+    isLoading: isLoadingFollower,
+    error: errorFollower,
+  } = useSWR<IFollowerRes[] | null>("my-follower", () => 
+    followService.myFollowers()
   );
+
   const {
     data: following,
-    isLoading: isLoading2,
-    error: error2,
-  } = useSWR<IFollowingRes[] | null>("other-following", () =>
-    id ? service.targetUserFollowing(+id) : null
+    isLoading: isLoadingFollowing,
+    error: errorFollowing,
+  } = useSWR<IFollowingRes[] | null>("my-following", () => 
+    followService.myFollowing()
   );
-  useEffect(() => {
-    console.log("flow0", follower);
-  }, [id]);
-  useEffect(() => {
-    if (follower && follower?.length > 0) {
-      const meFollow = follower.find((v) => v.nickname === nickname);
-      if (meFollow) {
-        setIsFollowing(true);
-      }
-    }
-  });
-  if (error || error2 || !id) {
-    return <div> no id</div>;
+
+  // 클럽 정보 가져오기
+  const {
+    data: myClub,
+    error: errorClub,
+    isLoading: isLoadingClub,
+  } = useSWR<IMyClubRes>("my-club", () => clubService.getMyClub());
+
+  // 로딩 상태 통합 처리
+  if (isLoadingFollower || isLoadingFollowing || isLoadingClub) {
+    return <Loading fullScreen text="프로필 정보를 불러오는 중입니다" />;
   }
-  if (isLoading || isLoading2) {
-    return <div> Loading.. </div>;
+
+  // 에러 상태 통합 처리
+  if (errorFollower || errorFollowing || errorClub) {
+    navigate("/error");
   }
 
   const onRank = () => {
     setSelectedMenu("story");
   };
+
   const onInfo = () => {
     setSelectedMenu("stock");
   };
+
   const handleBack = () => {
     navigate(-1);
   };
@@ -69,10 +71,10 @@ export default function OtherProfile() {
       <div className="container flex-grow flex flex-col">
         <div className="my-info flex justify-between p-4 w-full">
           <div>
-            <p className="text-2xl font-semibold">{"소욘"}</p>
-            <p>{"삼성전자 클럽"}</p>
+            <p className="text-2xl font-semibold">{nickname}</p>
+            <p>{myClub?.clubName + " 클럽"}</p>
           </div>
-          <Avatar name={"소욘"} variant="beam" width={48} />
+          <Avatar name={nickname || ""} variant="beam" width={48} />
         </div>
         <div className="my-info flex justify-between text-center px-8 py-2 items-center">
           <div className="cnt ">
@@ -95,21 +97,11 @@ export default function OtherProfile() {
             <p className="font-semibold">{0}</p>
           </div>
         </div>
-        <div className="btn-container p-4">
-          {isFollowing ? (
-            <div className="btn unfollow w-full h-12 bg-blue-500 rounded-lg text-center flex justify-center items-center my-2">
-              <p className="text-white font-medium text-lg">언팔로우</p>
-            </div>
-          ) : (
-            <div className="btn unfollow w-full h-12 bg-blue-500 rounded-lg text-center flex justify-center items-center my-2">
-              <p className="text-white font-medium text-lg">팔로우</p>
-            </div>
-          )}
-        </div>
+        <div className="btn-container p-4"></div>
         <Menu selectedMenu={selectedMenu} onRank={onRank} onInfo={onInfo} />
         <div className="flex-grow h-96 pb-12 overflow-scroll">
           {selectedMenu === "story" && <Story />}
-          {selectedMenu === "stock" && <OtherInfo id={id} />}
+          {selectedMenu === "stock" && <Info />}
         </div>
       </div>
     </>
