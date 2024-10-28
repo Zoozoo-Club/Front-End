@@ -1,4 +1,3 @@
-import React from "react";
 import { IPost } from "./page";
 import Avatar from "boring-avatars";
 import { IoEyeOutline } from "react-icons/io5";

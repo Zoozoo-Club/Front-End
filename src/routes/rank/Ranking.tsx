@@ -94,9 +94,8 @@ export default function Ranking() {
     }
   }, [activeType, amountRankData, roiRankData, userRankData]);
 
-  if (loading1 || loading2 || loading3) {
+  if (loading1 || loading2 || loading3 || loading4) {
     return <Loading size="md" text="클럽 랭킹을 불러오는 중입니다" />;
-
   }
   if (roiRankError || amountRankError || userRankError || myClubError) {
     navigate("/error");

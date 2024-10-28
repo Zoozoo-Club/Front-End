@@ -1,4 +1,3 @@
-import React from "react";
 import "./style.css";
 type Props = {
   selectedMenu: "story" | "stock";

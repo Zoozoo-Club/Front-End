@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import DropDown from "@/assets/icon-drop-down.svg?react";
 type Props = {
   name: string;

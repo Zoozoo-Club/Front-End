@@ -25,9 +25,9 @@ export interface IPost {
 export default function Lounge() {
   const navigate = useNavigate();
   const [selectedMenu, setSelectedMenu] = useState<"all" | "mine">("all");
-  const [error, setError] = useState<string | null>(null);
+
   const [data, setData] = useState<IPost[]>([]); //showing 게시물
-  const [isLoading, setIsLoading] = useState(false);
+
   const token = useAuthStore((state) => state.token);
   const openLoginModal = useLoginModalStore((state) => state.openModal);
   const { nextUrl, tab, setNextUrl } = useNextUrlStore();
@@ -41,8 +41,6 @@ export default function Lounge() {
 
   useEffect(() => {
     const fetchData = async () => {
-      setIsLoading(true);
-      setError(null);
       try {
         const posts = new postsAPI();
         const response =
@@ -50,9 +48,6 @@ export default function Lounge() {
         setData(response);
       } catch (err) {
         console.error("Failed to fetch posts:", err);
-        setError("게시물을 불러오는데 실패했습니다.");
-      } finally {
-        setIsLoading(false);
       }
     };
 
