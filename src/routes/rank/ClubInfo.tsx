@@ -22,7 +22,7 @@ const { VITE_STOCK_IMG_URL, VITE_STOCK_IMG_URLB } = import.meta.env;
 export default function ClubInfo() {
   // const navigate = useNavigate();
   const goToExternalSite = (url: string | undefined) => {
-    if (url) window.location.href = url;
+    if (url) window.open(url, "_blank");
   };
   // API 호출해서 데이터 겟
   const service = useMemo(() => new clubAPI(), []);
