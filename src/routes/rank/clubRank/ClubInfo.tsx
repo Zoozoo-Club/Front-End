@@ -37,11 +37,15 @@ export default function ClubInfo({ infos, id }: Props) {
     <div className="p-3">
       <div className="club-info flex justify-between">
         <div className="left flex gap-4 pt-2">
-          <img
-            className="w-12 h-12 rounded-xl"
-            src={`${VITE_STOCK_IMG_URL}${infos.companyInfo?.logoId}${VITE_STOCK_IMG_URLB}`}
-            alt={`${"club"}-logo`}
-          />
+          {infos.companyInfo?.logoId ? (
+            <img
+              className="w-12 h-12 rounded-xl"
+              src={`${VITE_STOCK_IMG_URL}${infos.companyInfo?.logoId}${VITE_STOCK_IMG_URLB}`}
+              alt={`${"club"}-logo`}
+            />
+          ) : (
+            <div className="w-8 h-8 inline-block bg-slate-300 rounded-xl"></div>
+          )}
           <div className="">
             <p className="text-2xl font-semibold">
               {infos.companyInfo?.companyName}
@@ -61,11 +65,16 @@ export default function ClubInfo({ infos, id }: Props) {
         <p className="text-xl font-bold">대표 주식</p>
         <div className="flex justify-between p-4">
           <div className="left flex gap-4 items-center">
-            <img
-              className="w-8 h-8 rounded-xl"
-              src={`${VITE_STOCK_IMG_URL}${infos.companyInfo.logoId}${VITE_STOCK_IMG_URLB}`}
-              alt={`${"club"}-logo`}
-            />
+            {infos.companyInfo.logoId ? (
+              <img
+                className="w-8 rounded-xl inline"
+                src={`${VITE_STOCK_IMG_URL}${infos.companyInfo.logoId}${VITE_STOCK_IMG_URLB}`}
+                alt={`${data?.name}-logo`}
+              />
+            ) : (
+              <div className="w-8 h-8 inline-block bg-slate-300 rounded-xl"></div>
+            )}
+
             <p className="text-lg font-semibold">{data?.name}</p>
           </div>
           <div className="right">
