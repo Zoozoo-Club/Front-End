@@ -1,10 +1,9 @@
 import HeaderNav from "@/components/HeaderNav";
-import React, { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Menu from "./Menu";
 import Ranking from "./Ranking";
 import ClubInfo from "./ClubInfo";
-import rankingAPI from "@/apis/rankingAPI";
 import useSWR from "swr";
 import clubAPI from "@/apis/clubAPI";
 import { IClubInfoRes } from "@/apis/types";
@@ -15,11 +14,12 @@ export default function ClubRank() {
   const [selectedMenu, setSelectedMenu] = useState<"rank" | "info">("rank");
   const service = useMemo(() => new clubAPI(), []);
   if (!id) {
-    return navigate("/error");
+    navigate("/error");
   }
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const { data, isLoading, error } = useSWR<IClubInfoRes>("club-info", () =>
-    service.info(+id)
+  const { data, isLoading, error } = useSWR<IClubInfoRes | null>(
+    "club-info",
+    () => (id ? service.info(+id) : null)
   );
   if (error || !id) {
     return <div> no id</div>;
@@ -36,7 +36,7 @@ export default function ClubRank() {
   };
   const handleBack = () => {
     // /rank -> / , /rank/detail?club= -> /rank
-    navigate("/");
+    navigate(-1);
   };
   const goToLounge = () => {
     navigate("/lounge");

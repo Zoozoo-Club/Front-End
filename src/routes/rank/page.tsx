@@ -4,7 +4,6 @@ import Menu from "./Menu";
 import { useEffect, useState } from "react";
 import Ranking from "./Ranking";
 import ClubInfo from "./ClubInfo";
-import { useAuthCheck } from "@/hooks/useRequireAuth";
 import {
   useAuthStore,
   useLoginModalStore,
@@ -37,7 +36,7 @@ export default function Rank() {
   };
   const handleBack = () => {
     // /rank -> / , /rank/detail?club= -> /rank
-    navigate("/");
+    navigate(-1);
   };
   const goToLounge = () => {
     if (!token) {

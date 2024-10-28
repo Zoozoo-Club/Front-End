@@ -1,10 +1,10 @@
 import ChartPortfolio from "@/components/ChartPortfolio";
-import React from "react";
 import StockItem from "./StockItem";
 import assetAPI from "@/apis/assetAPI";
 import useSWR from "swr";
 import { IAssetInfoRes } from "@/apis/types";
 import { useNavigate } from "react-router-dom";
+import { formatNumber } from "@/lib/nums";
 
 export default function Info() {
   const investmentChange = "-3.0";
@@ -25,13 +25,17 @@ export default function Info() {
   if (error || error2) {
     navigate("/error");
   }
+  const total =
+    +data?.output2[0].evlu_pfls_smtl_amt + +data?.output2[0].pchs_amt_smtl_amt;
   return (
     <div className="p-3">
       {/* <button onClick={() => openModal()}>로그인!</button> */}
       <div className="club-info flex justify-between">
         <p className="text-2xl font-semibold p-4 ">총 투자</p>
         <div className="right text-right p-5">
-          <p className="text-lg font-semibold leading-none">{"4,457,000"}원</p>
+          <p className="text-lg font-semibold leading-none">
+            {formatNumber(total)}원
+          </p>
           <p
             className={`text-sm text-end leading-none ${
               parseFloat(investmentChange) < 0

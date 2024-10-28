@@ -18,7 +18,7 @@ export default function Profile() {
   };
   const handleBack = () => {
     // /rank -> / , /rank/detail?club= -> /rank
-    navigate("/");
+    navigate(-1);
   };
 
   return (

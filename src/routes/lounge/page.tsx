@@ -72,7 +72,7 @@ export default function Lounge() {
   };
   const handleBack = () => {
     // /rank -> / , /rank/detail?club= -> /rank
-    navigate("/");
+    navigate(-1);
   };
   const goToRank = () => {
     navigate("/rank");

@@ -1,19 +1,13 @@
 import ChartPortfolio from "@/components/ChartPortfolio";
-import { useLoginModalStore } from "@/store/store";
-import ArrowRight from "@/assets/icon-arrow-right.svg?react";
-import React, { useEffect, useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import Top3Item from "./Top3Item";
 import RecommendItem from "./RecommendItem";
 import { useNavigate } from "react-router-dom";
 import clubAPI from "@/apis/clubAPI";
 import useSWR, { mutate } from "swr";
-import {
-  IClubCurrentPrice,
-  IClubInfoRes,
-  IMyClubRes,
-  MyClub,
-} from "@/apis/types";
+import { IClubCurrentPrice, IClubInfoRes, IMyClubRes } from "@/apis/types";
 import { formatNumber, truncateToEok } from "@/lib/nums";
+import productsAPI from "@/apis/productsAPI";
 
 interface IRecommendBond {
   profit: number;
@@ -22,31 +16,7 @@ interface IRecommendBond {
   risk: number;
   url?: string;
 }
-//수익률이 클럽 수익률보다 높은것 중 안전순위가 높은 순으로 3개정도 노출
-//판매 중개 장외
-const dummyRe: IRecommendBond[] = [
-  {
-    profit: 3.69,
-    name: "국고채권01125-3909(19-6)",
-    category: "장외",
-    risk: 6,
-    url: "www.naver.com",
-  },
-  {
-    profit: 4.22,
-    name: "한국투자캐피탈115-3",
-    category: "장외",
-    risk: 4,
-    url: "www.naver.com",
-  },
-  {
-    profit: 3.83,
-    name: "두산에너빌리티79-1",
-    category: "장외",
-    risk: 3,
-    url: "www.naver.com",
-  },
-];
+
 const { VITE_STOCK_IMG_URL, VITE_STOCK_IMG_URLB } = import.meta.env;
 export default function ClubInfo() {
   const navigate = useNavigate();
@@ -55,6 +25,7 @@ export default function ClubInfo() {
   };
   // API 호출해서 데이터 겟
   const service = useMemo(() => new clubAPI(), []);
+  const recomService = useMemo(() => new productsAPI(), []);
   const {
     data: myClub,
     error: myClubError,
@@ -64,6 +35,13 @@ export default function ClubInfo() {
   const { data, error, isLoading } = useSWR<IClubCurrentPrice | null>(
     "club-price",
     () => (myClub ? service.currentPrice(myClub.clubId) : null)
+  );
+  const {
+    data: recom,
+    error: recomError,
+    isLoading: recomIsLoading,
+  } = useSWR<IRecommendBond[]>("recommand", () =>
+    recomService.recommendedProductsByClubProfit()
   );
   const {
     data: infos,
@@ -76,14 +54,16 @@ export default function ClubInfo() {
     mutate("club-info");
     mutate("club-price");
   }, [myClub]);
-  if (myClubIsLoading || isLoading || infoIsLoading || !infos) {
-    return (
-      <p>
-        Loading..{myClubIsLoading} {isLoading} {infoIsLoading} {infos && "굿"}
-      </p>
-    );
+  if (
+    myClubIsLoading ||
+    isLoading ||
+    infoIsLoading ||
+    !infos ||
+    recomIsLoading
+  ) {
+    return <p>Loading..</p>;
   }
-  if (myClubError || error || infoError) {
+  if (myClubError || error || infoError || recomError) {
     navigate("/error");
   }
   return (
@@ -181,17 +161,21 @@ export default function ClubInfo() {
       <div className="recommend">
         <p className="text-xl font-semibold pb-4 pl-2">신한의 추천 상품</p>
         <div className="recommend-container flex gap-2">
-          {dummyRe.map((value) => {
-            return (
-              <RecommendItem
-                profit={value.profit}
-                name={value.name}
-                category={value.category}
-                risk={value.risk}
-                url={value.url}
-              />
-            );
-          })}
+          {recom &&
+            recom
+              .filter((v) => v.risk >= 4)
+              .slice(0, 3)
+              .map((value) => {
+                return (
+                  <RecommendItem
+                    profit={value.profit}
+                    name={value.name}
+                    category={value.category}
+                    risk={value.risk}
+                    url={value.url}
+                  />
+                );
+              })}
         </div>
       </div>
     </div>

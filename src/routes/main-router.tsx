@@ -1,5 +1,4 @@
-import Community from "@/routes/community/page";
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, Navigate } from "react-router-dom";
 import Layout from "./Layout";
 import Dev from "./dev/page";
 import Profile from "./profile/page";
@@ -14,8 +13,7 @@ const routers = [
     element: <Layout />,
     children: [
       {
-        path: "",
-        element: <Community />,
+        element: <Navigate to="/rank" replace />,
         index: true,
       },
     ],
