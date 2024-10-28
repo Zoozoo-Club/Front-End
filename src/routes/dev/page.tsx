@@ -237,9 +237,9 @@ export default function Dev() {
     fetchAllRanking();
     fetchTargetClubRanking(2);
     fetchAssetInfo();
-    fetchTargetAssetInfo(1);
+    fetchTargetAssetInfo(6);
     fetchMyHoldings();
-    fetchTargetUserHoldings(1);
+    fetchTargetUserHoldings(6);
   }, []);
   return (
     <div>
