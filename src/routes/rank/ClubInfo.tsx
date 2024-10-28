@@ -8,6 +8,7 @@ import useSWR, { mutate } from "swr";
 import { IClubCurrentPrice, IClubInfoRes, IMyClubRes } from "@/apis/types";
 import { formatNumber, truncateToEok } from "@/lib/nums";
 import productsAPI from "@/apis/productsAPI";
+import Loading from "@/components/Loading";
 
 interface IRecommendBond {
   profit: number;
@@ -61,7 +62,7 @@ export default function ClubInfo() {
     !infos ||
     recomIsLoading
   ) {
-    return <p>Loading..</p>;
+    return <Loading size="md" text="클럽 정보를 불러오는 중입니다" />;
   }
   if (myClubError || error || infoError || recomError) {
     navigate("/error");
@@ -128,6 +129,7 @@ export default function ClubInfo() {
               labels={infos.clubPortfolio.stockHoldings
                 .slice(0, 5)
                 .map((v) => v.stockName)}
+              isGita={true}
             />
           </div>
           <div className="stock-info flex-1 w-full p-4">

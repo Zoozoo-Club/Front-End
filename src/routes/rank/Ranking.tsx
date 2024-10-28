@@ -11,6 +11,7 @@ import {
   useNextUrlStore,
 } from "@/store/store";
 import clubAPI from "@/apis/clubAPI";
+import Loading from "@/components/Loading";
 
 export type RankType = "profit" | "assets" | "headCount";
 export default function Ranking() {
@@ -93,11 +94,7 @@ export default function Ranking() {
     }
   }, [activeType, amountRankData, roiRankData, userRankData]);
   if (loading1 || loading2 || loading3) {
-    return (
-      <div>
-        <p>loading...</p>
-      </div>
-    );
+    return <Loading size="md" text="클럽 랭킹을 불러오는 중입니다" />;
   }
   if (roiRankError || amountRankError || userRankError) {
     navigate("/error");

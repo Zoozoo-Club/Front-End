@@ -4,6 +4,7 @@ import useSWR from "swr";
 import { IClubZooZooInfoRes } from "@/apis/types";
 import { useNavigate } from "react-router-dom";
 import RankItem from "./RankItem";
+import Loading from "@/components/Loading";
 
 export default function Ranking({ id }: { id: string }) {
   const navigate = useNavigate();
@@ -16,11 +17,7 @@ export default function Ranking({ id }: { id: string }) {
   );
 
   if (isLoading) {
-    return (
-      <div>
-        <p>loading...</p>
-      </div>
-    );
+    return <Loading size="md" text="랭킹 정보를 불러오는 중입니다" />;
   }
   if (error) {
     navigate("/error");
