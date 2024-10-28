@@ -148,7 +148,7 @@ export default function OtherProfile() {
           )}
         </div>
         <Menu selectedMenu={selectedMenu} onRank={onRank} onInfo={onInfo} />
-        <div className="flex-grow h-96 pb-12 overflow-scroll">
+        <div className="flex-grow h-96 pb-12 overflow-scroll scroll">
           {selectedMenu === "story" && <Story />}
           {selectedMenu === "stock" && <OtherInfo id={id} />}
         </div>
