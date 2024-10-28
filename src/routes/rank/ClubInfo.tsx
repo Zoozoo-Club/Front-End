@@ -22,7 +22,7 @@ const { VITE_STOCK_IMG_URL, VITE_STOCK_IMG_URLB } = import.meta.env;
 export default function ClubInfo() {
   const navigate = useNavigate();
   const goToExternalSite = (url: string | undefined) => {
-    if (url) window.location.href = "https://" + url;
+    if (url) window.location.href = url;
   };
   // API 호출해서 데이터 겟
   const service = useMemo(() => new clubAPI(), []);
@@ -82,7 +82,7 @@ export default function ClubInfo() {
               {infos.companyInfo.companyName}
             </p>
             <p
-              className="text-slate-400"
+              className="text-slate-400 underline"
               onClick={() => goToExternalSite(infos.companyInfo?.websiteUrl)}
             >
               기업 사이트
