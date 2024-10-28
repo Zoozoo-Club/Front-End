@@ -128,6 +128,7 @@ export default function ClubInfo() {
               labels={infos.clubPortfolio.stockHoldings
                 .slice(0, 5)
                 .map((v) => v.stockName)}
+              isGita={true}
             />
           </div>
           <div className="stock-info flex-1 w-full p-4">

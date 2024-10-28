@@ -6,6 +6,7 @@ import Rank from "./rank/page";
 import Lounge from "./lounge/page";
 import ErrorPage from "./error/page";
 import ClubRank from "./rank/clubRank/page";
+import OtherProfile from "./profile/OtherProfile";
 
 const routers = [
   {
@@ -25,6 +26,11 @@ const routers = [
       {
         path: "",
         element: <Profile />,
+        index: true,
+      },
+      {
+        path: ":id",
+        element: <OtherProfile />,
         index: true,
       },
     ],
