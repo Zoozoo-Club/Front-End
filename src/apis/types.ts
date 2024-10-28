@@ -75,7 +75,10 @@ export interface MyClub {
   clubId: number;
   clubName: string;
 }
-
+export interface IOtherInfo {
+  userName: string;
+  clubName: string;
+}
 export interface IAllClubRankingInfoRes {
   clubId: number;
   clubName: string;
@@ -123,12 +126,17 @@ export interface ITargetAssetRes {
   pchsAmtSmtlAmt?: string | null;
 }
 
+export interface IOtherAssetsRes {
+  stocksInfos: IHoldingsRes[];
+  roi: number;
+}
 export interface IHoldingsRes {
   stockCode: string;
   stockName: string;
   quantity: number;
   averagePrice: number;
   currentPrice: number;
+  holdingRatio: number;
   earningRate: number;
 }
 

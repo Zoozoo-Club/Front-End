@@ -1,66 +1,99 @@
 import HeaderNav from "@/components/HeaderNav";
 import { useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Menu from "./Menu";
 import Avatar from "boring-avatars";
 import Story from "./Story";
-import Info from "./Info";
-import { useAuthStore } from "@/store/store";
-import useSWR from "swr";
-import { IFollowerRes, IFollowingRes, IMyClubRes } from "@/apis/types";
-import clubAPI from "@/apis/clubAPI";
 import followsAPI from "@/apis/followsAPI";
+import useSWR, { mutate } from "swr";
+import { IFollowerRes, IFollowingRes, IOtherInfo } from "@/apis/types";
+import { useAuthStore } from "@/store/store";
+import OtherInfo from "./OtherInfo";
 import Loading from "@/components/Loading";
 
-export default function Profile() {
+export default function OtherProfile() {
+  const { id } = useParams(); // URL에서 id를 추출
   const navigate = useNavigate();
-  const clubService = useMemo(() => new clubAPI(), []);
-  const followService = useMemo(() => new followsAPI(), []);
+  const [isFollowing, setIsFollowing] = useState<boolean>(false);
   const { nickname } = useAuthStore();
+  const service = useMemo(() => new followsAPI(), []);
+  if (!id) {
+    navigate("/error");
+  }
   const [selectedMenu, setSelectedMenu] = useState<"story" | "stock">("story");
 
-  // 내 팔로워/팔로잉 정보 가져오기
+  const handleFollow = async () => {
+    if (!id) return;
+    try {
+      console.log("눌리면 대답을해");
+      await service.follow(+id);
+      console.log("res옴?");
+      mutate("other-follower");
+      mutate("other-following");
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const handleUnFollow = async () => {
+    if (!id) return;
+    try {
+      console.log("눌리면 대답을해un");
+      const res = await service.unFollow(+id);
+      console.log("res옴?");
+      console.log("res:", res);
+      mutate("other-follower");
+      mutate("other-following");
+    } catch (error) {
+      console.error(error);
+    }
+  };
   const {
     data: follower,
-    isLoading: isLoadingFollower,
-    error: errorFollower,
-  } = useSWR<IFollowerRes[] | null>("my-follower", () => 
-    followService.myFollowers()
+    isLoading,
+    error,
+  } = useSWR<IFollowerRes[] | null>("other-follower", () =>
+    id ? service.targetUserFollowers(+id) : null
   );
-
   const {
     data: following,
-    isLoading: isLoadingFollowing,
-    error: errorFollowing,
-  } = useSWR<IFollowingRes[] | null>("my-following", () => 
-    followService.myFollowing()
+    isLoading: isLoading2,
+    error: error2,
+  } = useSWR<IFollowingRes[] | null>("other-following", () =>
+    id ? service.targetUserFollowing(+id) : null
   );
-
-  // 클럽 정보 가져오기
   const {
-    data: myClub,
-    error: errorClub,
-    isLoading: isLoadingClub,
-  } = useSWR<IMyClubRes>("my-club", () => clubService.getMyClub());
+    data,
+    isLoading: isLoading3,
+    error: error3,
+  } = useSWR<IOtherInfo | null>("other-info", () =>
+    id ? service.targetUserInfo(id) : null
+  );
+  useEffect(() => {
+    console.log("flow0", follower);
+  }, [id]);
+  useEffect(() => {
+    if (follower && follower?.length > 0) {
+      const meFollow = follower.find((v) => v.nickname === nickname);
+      if (meFollow) {
+        setIsFollowing(true);
+      }
+    }
+    if (nickname && nickname === data?.userName) navigate("/profile");
+  }, [follower, nickname, data]);
 
-  // 로딩 상태 통합 처리
-  if (isLoadingFollower || isLoadingFollowing || isLoadingClub) {
-    return <Loading fullScreen text="프로필 정보를 불러오는 중입니다" />;
+  if (error || error2 || error3 || !id) {
+    return <div> no id</div>;
   }
-
-  // 에러 상태 통합 처리
-  if (errorFollower || errorFollowing || errorClub) {
-    navigate("/error");
+  if (isLoading || isLoading2 || isLoading3) {
+    return <Loading size="md" text="유저 정보를 불러오는 중입니다" />;
   }
 
   const onRank = () => {
     setSelectedMenu("story");
   };
-
   const onInfo = () => {
     setSelectedMenu("stock");
   };
-
   const handleBack = () => {
     navigate(-1);
   };
@@ -71,10 +104,10 @@ export default function Profile() {
       <div className="container flex-grow flex flex-col">
         <div className="my-info flex justify-between p-4 w-full">
           <div>
-            <p className="text-2xl font-semibold">{nickname}</p>
-            <p>{myClub?.clubName + " 클럽"}</p>
+            <p className="text-2xl font-semibold">{data?.userName}</p>
+            <p>{data?.clubName + " 클럽"}</p>
           </div>
-          <Avatar name={nickname || ""} variant="beam" width={48} />
+          <Avatar name={data?.userName} variant="beam" width={48} />
         </div>
         <div className="my-info flex justify-between text-center px-8 py-2 items-center">
           <div className="cnt ">
@@ -97,11 +130,27 @@ export default function Profile() {
             <p className="font-semibold">{0}</p>
           </div>
         </div>
-        <div className="btn-container p-4"></div>
+        <div className="btn-container p-4">
+          {isFollowing ? (
+            <div
+              className="btn unfollow w-full h-12 bg-blue-500 rounded-lg text-center flex justify-center items-center my-2"
+              onClick={handleUnFollow}
+            >
+              <p className="text-white font-medium text-lg">언팔로우</p>
+            </div>
+          ) : (
+            <div
+              className="btn unfollow w-full h-12 bg-blue-500 rounded-lg text-center flex justify-center items-center my-2"
+              onClick={handleFollow}
+            >
+              <p className="text-white font-medium text-lg">팔로우</p>
+            </div>
+          )}
+        </div>
         <Menu selectedMenu={selectedMenu} onRank={onRank} onInfo={onInfo} />
         <div className="flex-grow h-96 pb-12 overflow-scroll">
           {selectedMenu === "story" && <Story />}
-          {selectedMenu === "stock" && <Info />}
+          {selectedMenu === "stock" && <OtherInfo id={id} />}
         </div>
       </div>
     </>

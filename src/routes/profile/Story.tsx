@@ -1,4 +1,3 @@
-import React from "react";
 import { PiExclamationMark } from "react-icons/pi";
 
 export default function Story() {

@@ -44,3 +44,4 @@ public/workbox-*.js
 package-lock.json
 
 .env
+dist/

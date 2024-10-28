@@ -1,7 +1,6 @@
-import React from 'react';
-import './style.css';
+import "./style.css";
 type Props = {
-  selectedMenu: 'all' | 'mine';
+  selectedMenu: "all" | "mine";
   onRank: () => void;
   onInfo: () => void;
 };
@@ -11,7 +10,7 @@ function Menu({ selectedMenu, onRank, onInfo }: Props) {
       <div
         onClick={onRank}
         className={`${
-          selectedMenu === 'all' ? '' : 'text-slate-300'
+          selectedMenu === "all" ? "" : "text-slate-300"
         } w-1/2 flex justify-center items-center `}
       >
         <p className="text-center">모두의 라운지</p>
@@ -19,14 +18,14 @@ function Menu({ selectedMenu, onRank, onInfo }: Props) {
       <div
         onClick={onInfo}
         className={`${
-          selectedMenu === 'mine' ? '' : 'text-slate-300'
+          selectedMenu === "mine" ? "" : "text-slate-300"
         } w-1/2 flex justify-center items-center `}
       >
         <p className="text-center">내 클럽 라운지</p>
       </div>
       <div
         className={`w-1/2 absolute bg-black h-[2px] bottom-0 line ${
-          selectedMenu === 'mine' ? 'move-right' : ''
+          selectedMenu === "mine" ? "move-right" : ""
         }`}
       ></div>
     </div>

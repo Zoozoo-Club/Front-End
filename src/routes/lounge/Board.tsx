@@ -1,5 +1,4 @@
 import SearchBar from "@/components/SearchBar";
-import React from "react";
 import { IPost } from "./page";
 import Post from "./Post";
 type Props = {

@@ -2,7 +2,7 @@ import ChartPortfolio from "@/components/ChartPortfolio";
 import { useEffect, useMemo } from "react";
 import Top3Item from "./Top3Item";
 import RecommendItem from "./RecommendItem";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import clubAPI from "@/apis/clubAPI";
 import useSWR, { mutate } from "swr";
 import { IClubCurrentPrice, IClubInfoRes, IMyClubRes } from "@/apis/types";
@@ -20,9 +20,9 @@ interface IRecommendBond {
 
 const { VITE_STOCK_IMG_URL, VITE_STOCK_IMG_URLB } = import.meta.env;
 export default function ClubInfo() {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const goToExternalSite = (url: string | undefined) => {
-    if (url) window.location.href = "https://" + url;
+    if (url) window.location.href = url;
   };
   // API 호출해서 데이터 겟
   const service = useMemo(() => new clubAPI(), []);
@@ -65,7 +65,8 @@ export default function ClubInfo() {
     return <Loading size="md" text="클럽 정보를 불러오는 중입니다" />;
   }
   if (myClubError || error || infoError || recomError) {
-    navigate("/error");
+    // navigate("/error");
+    return <div>Error</div>;
   }
   return (
     <div className="p-3">
@@ -82,7 +83,7 @@ export default function ClubInfo() {
               {infos.companyInfo.companyName}
             </p>
             <p
-              className="text-slate-400"
+              className="text-slate-400 underline"
               onClick={() => goToExternalSite(infos.companyInfo?.websiteUrl)}
             >
               기업 사이트

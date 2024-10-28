@@ -2,28 +2,24 @@ import ChartPortfolio from "@/components/ChartPortfolio";
 import StockItem from "./StockItem";
 import assetAPI from "@/apis/assetAPI";
 import useSWR from "swr";
-import { IAssetInfoRes, IHoldingsRes } from "@/apis/types";
-import { useNavigate } from "react-router-dom";
+import { IAssetInfoRes } from "@/apis/types";
+// import { useNavigate } from "react-router-dom";
 import { formatNumber } from "@/lib/nums";
 import Loading from "@/components/Loading";
-
+const colors = ["ff6384", "36a2eb", "ffce56", "4bc0c0", "9966ff", "ff9f40"];
 export default function Info() {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const service = new assetAPI();
   const { data, isLoading, error } = useSWR<IAssetInfoRes>("my-asset", () =>
     service.myAsset()
   );
-  const {
-    data: holdings,
-    isLoading: isLoading2,
-    error: error2,
-  } = useSWR<IHoldingsRes[]>("my-holdings", () => service.myHoldings());
 
-  if (isLoading || isLoading2) {
+  if (isLoading) {
     return <Loading size="md" text="데이터를 불러오는 중입니다" />;
   }
-  if (error || error2) {
-    navigate("/error");
+  if (error) {
+    // navigate("/error");
+    return <div>Error</div>;
   }
   const total =
     data &&
@@ -93,7 +89,7 @@ export default function Info() {
                   <StockItem
                     name={v.prdt_name}
                     profit={"" + v.evlu_pfls_rt}
-                    color={"ff6384"}
+                    color={colors[i]}
                     price={v.pchs_avg_pric.split(".")[0]}
                     key={i}
                     percent={formatNumber(+v.holdingRatio, 2)}

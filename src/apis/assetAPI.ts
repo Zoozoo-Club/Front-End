@@ -1,8 +1,8 @@
-import { BaseApi } from './baseAPI';
+import { BaseApi } from "./baseAPI";
 
 export default class assetAPI extends BaseApi {
   async myAsset() {
-    const response = await this.fetcher.get('/my-story/assets');
+    const response = await this.fetcher.get("/my-story/assets");
     return response.data;
   }
 

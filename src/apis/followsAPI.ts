@@ -1,13 +1,18 @@
-import { BaseApi } from './baseAPI';
+import { BaseApi } from "./baseAPI";
 
 export default class followsAPI extends BaseApi {
+  async targetUserInfo(id: string) {
+    const response = await this.fetcher.get("/users/" + id);
+    return response.data;
+  }
+
   async myFollowers() {
-    const response = await this.fetcher.get('/follows/followers');
+    const response = await this.fetcher.get("/follows/followers");
     return response.data;
   }
 
   async myFollowing() {
-    const response = await this.fetcher.get('/follows/following');
+    const response = await this.fetcher.get("/follows/following");
     return response.data;
   }
 

@@ -1,17 +1,11 @@
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
 import {
   IAuthStore,
   IBear,
   ICommonModalStore,
   ILoginModalStore,
-} from './types';
-
-interface INextUrlStore {
-  nextUrl: string | null;
-  tab: string | null;
-  setNextUrl: (url: string | null, tab?: string | null) => void;
-}
+} from "./types";
 
 export const useNextUrlStore = create<{
   nextUrl: string | null;
@@ -25,18 +19,18 @@ export const useNextUrlStore = create<{
 }));
 
 const dailyMessages: Record<string, string> = {
-  월: '월! 월스트릿 프로처럼 신투와 함께해요!',
-  화: '화! 화제의 종목을 신투에서 찾아봐요!',
-  수: '수! 수익을 위해 공부는 신투에서!',
-  목: '목! 목표는 신투와 함께 세워봐요!',
-  금: '금! 금방 이뤄질거에요, 신투와 함께라면!',
-  토: '주말에도 신한투자증권과 함께해요!',
-  일: '주말에도 신한투자증권과 함께해요!',
+  월: "월! 월스트릿 프로처럼 신투와 함께해요!",
+  화: "화! 화제의 종목을 신투에서 찾아봐요!",
+  수: "수! 수익을 위해 공부는 신투에서!",
+  목: "목! 목표는 신투와 함께 세워봐요!",
+  금: "금! 금방 이뤄질거에요, 신투와 함께라면!",
+  토: "주말에도 신한투자증권과 함께해요!",
+  일: "주말에도 신한투자증권과 함께해요!",
 };
 
 // 요일에 따른 메시지 가져오기 함수
 const getDailyMessage = () => {
-  const daysOfWeek = ['일', '월', '화', '수', '목', '금', '토'];
+  const daysOfWeek = ["일", "월", "화", "수", "목", "금", "토"];
   const today = new Date().getDay(); // 0: 일요일, 1: 월요일, ... , 6: 토요일
   return dailyMessages[daysOfWeek[today]]; // 오늘의 요일에 맞는 메시지 반환
 };
@@ -52,13 +46,13 @@ export const useBearStore = create<IBear>((set) => ({
 export const useCommonModalStore = create<ICommonModalStore>((set) => ({
   modal: {
     show: false,
-    title: '',
-    message: '',
+    title: "",
+    message: "",
   },
   onClick: () => {},
   openModal: (title: string, message: string, onClick: () => void) =>
     set({ modal: { show: true, title, message }, onClick }),
-  closeModal: () => set({ modal: { show: false, title: '', message: '' } }),
+  closeModal: () => set({ modal: { show: false, title: "", message: "" } }),
 }));
 
 export const useLoginModalStore = create<ILoginModalStore>((set) => ({
@@ -79,12 +73,12 @@ export const useAuthStore = create(
         // 로그인 성공 모달을 열기
         useCommonModalStore
           .getState()
-          .openModal('로그인 성공', getDailyMessage(), () => {
+          .openModal("로그인 성공", getDailyMessage(), () => {
             useCommonModalStore.getState().closeModal();
             // 모달이 닫힌 후에 URL 체크 및 이동
             const { nextUrl, tab } = useNextUrlStore.getState();
             if (nextUrl) {
-              if (nextUrl === '/rank' && tab === 'info') {
+              if (nextUrl === "/rank" && tab === "info") {
                 // rank 페이지의 info 탭으로 이동하는 경우는 리다이렉트하지 않음
                 return;
               }
@@ -96,7 +90,7 @@ export const useAuthStore = create(
       logout: () => set({ nickname: null, token: null }),
     }),
     {
-      name: 'user-storage',
+      name: "user-storage",
       getStorage: () => localStorage,
     }
   )
