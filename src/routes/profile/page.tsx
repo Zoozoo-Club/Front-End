@@ -53,15 +53,7 @@ export default function Profile() {
             <p className="font-semibold">{2}</p>
           </div>
         </div>
-        <div className="btn-container p-4">
-          {isFollowing ? (
-            <div className="btn unfollow w-full h-12 bg-blue-500 rounded-lg text-center flex justify-center items-center my-2">
-              <p className="text-white font-medium text-lg">언팔로우</p>
-            </div>
-          ) : (
-            <div className="text-white font-medium text-lg">팔로우</div>
-          )}
-        </div>
+        <div className="btn-container p-4"></div>
         <Menu selectedMenu={selectedMenu} onRank={onRank} onInfo={onInfo} />
         <div className="flex-grow h-96 pb-12 overflow-scroll">
           {selectedMenu === "story" && <Story />}
