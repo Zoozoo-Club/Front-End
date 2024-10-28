@@ -5,6 +5,7 @@ import useSWR from "swr";
 import { IAssetInfoRes, IHoldingsRes } from "@/apis/types";
 import { useNavigate } from "react-router-dom";
 import { formatNumber } from "@/lib/nums";
+import Loading from "@/components/Loading";
 
 export default function Info() {
   const navigate = useNavigate();
@@ -19,7 +20,7 @@ export default function Info() {
   } = useSWR<IHoldingsRes[]>("my-holdings", () => service.myHoldings());
 
   if (isLoading || isLoading2) {
-    return <p>Loading..</p>;
+    return <Loading size="md" text="데이터를 불러오는 중입니다" />;
   }
   if (error || error2) {
     navigate("/error");

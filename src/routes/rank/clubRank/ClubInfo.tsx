@@ -6,6 +6,7 @@ import clubAPI from "@/apis/clubAPI";
 import useSWR from "swr";
 import { formatNumber, truncateToEok } from "@/lib/nums";
 import { useNavigate } from "react-router-dom";
+import Loading from "@/components/Loading";
 const { VITE_STOCK_IMG_URL, VITE_STOCK_IMG_URLB } = import.meta.env;
 
 type Props = {
@@ -26,7 +27,7 @@ export default function ClubInfo({ infos, id }: Props) {
     () => service.currentPrice(+id)
   );
   if (isLoading) {
-    return <p>Loading..</p>;
+    return <Loading size="md" text="클럽 정보를 불러오는 중입니다" />;
   }
   if (error) {
     navigate("/error");
@@ -94,6 +95,7 @@ export default function ClubInfo({ infos, id }: Props) {
               labels={infos.clubPortfolio.stockHoldings
                 .slice(0, 5)
                 .map((v) => v.stockName)}
+              isGita={true}
             />
           </div>
           <div className="stock-info flex-1 w-full p-4">

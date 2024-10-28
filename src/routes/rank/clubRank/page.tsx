@@ -7,6 +7,7 @@ import ClubInfo from "./ClubInfo";
 import useSWR from "swr";
 import clubAPI from "@/apis/clubAPI";
 import { IClubInfoRes } from "@/apis/types";
+import Loading from "@/components/Loading";
 
 export default function ClubRank() {
   const { id } = useParams(); // URL에서 id를 추출
@@ -25,7 +26,7 @@ export default function ClubRank() {
     return <div> no id</div>;
   }
   if (isLoading) {
-    return <div> Loading.. </div>;
+    return <Loading size="md" text="클럽 랭킹 정보를 불러오는 중입니다" />;
   }
 
   const onRank = () => {
