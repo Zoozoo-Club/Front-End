@@ -17,7 +17,7 @@ export default function ClubInfo({ infos, id }: Props) {
   // const navigate = useNavigate();
 
   const goToExternalSite = (url: string | undefined) => {
-    if (url) window.location.href = "https://" + url;
+    if (url) window.location.href = "http://" + url;
   };
   // API 호출해서 데이터 겟
   const service = useMemo(() => new clubAPI(), []);
