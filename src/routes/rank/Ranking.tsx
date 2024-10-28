@@ -1,5 +1,5 @@
-import React, { useEffect, useMemo, useState } from "react";
-import dummyRank from "@/dummy/dummyRank.json";
+import { useEffect, useMemo, useState } from "react";
+// import dummyRank from "@/dummy/dummyRank.json";
 import RankItem from "./RankItem";
 import { useNavigate } from "react-router-dom";
 import useSWR from "swr";
@@ -92,14 +92,14 @@ export default function Ranking() {
       setData(userRankData);
     }
   }, [activeType, amountRankData, roiRankData, userRankData]);
-  if (loading1 || loading2 || loading3) {
+  if (loading1 || loading2 || loading3 || loading4) {
     return (
       <div>
         <p>loading...</p>
       </div>
     );
   }
-  if (roiRankError || amountRankError || userRankError) {
+  if (roiRankError || amountRankError || userRankError || myClubError) {
     navigate("/error");
   }
 
