@@ -62,7 +62,7 @@ export default function Layout() {
           </div>
           <div className="w-12 h-full flex flex-col items-center justify-center bg-blue-500 text-white">
             <img
-              src="public/icon-menu.webp?url"
+              src="/icon-menu.webp?url"
               alt="메뉴 아이콘"
               className="w-6 h-6 mb-1"
             />
