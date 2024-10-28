@@ -5,6 +5,7 @@ import useSWR from "swr";
 import { IOtherAssetsRes, ITargetAssetRes } from "@/apis/types";
 import { useNavigate } from "react-router-dom";
 import { formatNumber } from "@/lib/nums";
+import Loading from "@/components/Loading";
 type Props = {
   id: string;
 };
@@ -25,7 +26,7 @@ export default function Info({ id }: Props) {
   );
 
   if (isLoading || isLoading2) {
-    return <p>Loading..</p>;
+    return <Loading size="md" text="유저 정보를 불러오는 중입니다" />;
   }
   if (error || error2) {
     navigate("/error");

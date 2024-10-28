@@ -4,7 +4,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import Menu from "./Menu";
 import Avatar from "boring-avatars";
 import Story from "./Story";
-import Info from "./Info";
 import followsAPI from "@/apis/followsAPI";
 import useSWR from "swr";
 import { IFollowerRes, IFollowingRes, IOtherInfo } from "@/apis/types";

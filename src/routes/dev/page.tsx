@@ -1,5 +1,5 @@
 import IconHeart from "@/assets/icon-heart.svg?react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Chart from "./components/Chart";
 import LineChart from "./components/LineChart";
 import { useCommonModalStore, useLoginModalStore } from "@/store/store";
@@ -12,8 +12,7 @@ import assetAPI from "@/apis/assetAPI";
 //테스트용 페이지
 export default function Dev() {
   const { closeModal, openModal } = useCommonModalStore();
-  const [userProducts, setUserProducts] = useState([]);
-  const [clubProducts, setClubProducts] = useState([]);
+
   const { openModal: login } = useLoginModalStore();
 
   const handleModal = () => {
@@ -29,9 +28,6 @@ export default function Dev() {
         const clubRecommended =
           await products.recommendedProductsByClubProfit();
 
-        setUserProducts(userRecommended);
-        setClubProducts(clubRecommended);
-
         // 콘솔에서도 확인할 수 있게 로깅
         console.log("사용자 추천 상품:", userRecommended);
         console.log("클럽 추천 상품:", clubRecommended);
@@ -44,9 +40,6 @@ export default function Dev() {
         const follows = new followsAPI();
         const myFollowers = await follows.myFollowers();
         const myFollowing = await follows.myFollowing();
-
-        setUserProducts(myFollowers);
-        setClubProducts(myFollowing);
 
         // 콘솔에서도 확인할 수 있게 로깅
         console.log("내 팔로워:", myFollowers);
@@ -190,7 +183,7 @@ export default function Dev() {
         console.log("내 자산 가져오기 실패: ", error);
       }
     }
-    async function fetchTargetAssetInfo(targetUserId) {
+    async function fetchTargetAssetInfo(targetUserId: number) {
       const asset = new assetAPI();
       try {
         console.log(`${targetUserId} 자산정보 가져오는 중`);

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import rankingAPI from "@/apis/rankingAPI";
 import useSWR from "swr";
 import { IClubZooZooInfoRes } from "@/apis/types";

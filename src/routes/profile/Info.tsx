@@ -2,7 +2,7 @@ import ChartPortfolio from "@/components/ChartPortfolio";
 import StockItem from "./StockItem";
 import assetAPI from "@/apis/assetAPI";
 import useSWR from "swr";
-import { IAssetInfoRes, IHoldingsRes } from "@/apis/types";
+import { IAssetInfoRes } from "@/apis/types";
 import { useNavigate } from "react-router-dom";
 import { formatNumber } from "@/lib/nums";
 import Loading from "@/components/Loading";
@@ -13,16 +13,11 @@ export default function Info() {
   const { data, isLoading, error } = useSWR<IAssetInfoRes>("my-asset", () =>
     service.myAsset()
   );
-  const {
-    data: holdings,
-    isLoading: isLoading2,
-    error: error2,
-  } = useSWR<IHoldingsRes[]>("my-holdings", () => service.myHoldings());
 
-  if (isLoading || isLoading2) {
+  if (isLoading) {
     return <Loading size="md" text="데이터를 불러오는 중입니다" />;
   }
-  if (error || error2) {
+  if (error) {
     navigate("/error");
   }
   const total =
