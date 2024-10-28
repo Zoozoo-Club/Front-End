@@ -3,24 +3,27 @@ import dummyRank from "@/dummy/dummyRank.json";
 import RankItem from "./RankItem";
 import { useNavigate } from "react-router-dom";
 import useSWR from "swr";
-import { IAllClubRankingInfoRes } from "@/apis/types";
+import { IAllClubRankingInfoRes, MyClub } from "@/apis/types";
 import rankingAPI from "@/apis/rankingAPI";
 import {
   useAuthStore,
   useLoginModalStore,
   useNextUrlStore,
 } from "@/store/store";
+import clubAPI from "@/apis/clubAPI";
 
 export type RankType = "profit" | "assets" | "headCount";
 export default function Ranking() {
   const [data, setData] = useState<IAllClubRankingInfoRes[]>([]);
   const [activeType, setActiveType] = useState<RankType>("profit");
+  const [myRanking, setMyRanking] = useState<JSX.Element | null>(null);
   const token = useAuthStore((state) => state.token);
   const openLoginModal = useLoginModalStore((state) => state.openModal);
   const setNextUrl = useNextUrlStore((state) => state.setNextUrl);
   const navigate = useNavigate();
   // API 호출해서 데이터 겟
   const service = useMemo(() => new rankingAPI(), []);
+  const clubService = useMemo(() => new clubAPI(), []);
   // 참여자
   const {
     data: userRankData,
@@ -45,6 +48,35 @@ export default function Ranking() {
   } = useSWR<IAllClubRankingInfoRes[]>("rank-by-roi", () =>
     service.allClubRankingByUserByROI()
   );
+  const {
+    data: myClubData,
+    error: myClubError,
+    isLoading: loading4,
+  } = useSWR<MyClub>("myclub", () => clubService.getMyClub());
+
+  useEffect(() => {
+    if (!myClubData) return;
+    const foundRanking = data.find((item) => item.clubId === myClubData.clubId);
+    if (foundRanking) {
+      setMyRanking(
+        <RankItem
+          key={foundRanking.clubId}
+          onClick={() => {
+            navigate(`club-rank/${foundRanking.clubId}`);
+          }}
+          no={data.indexOf(foundRanking) + 1}
+          name={foundRanking.clubName}
+          profit={foundRanking.roi}
+          id={foundRanking.clubId}
+          userCount={foundRanking.userCount}
+          totalAmount={foundRanking.totalAmount}
+          type={activeType}
+          imgId={foundRanking.code}
+        />
+      );
+    }
+  }, [data]);
+
   useEffect(() => {
     // if (loading1 || loading2 || loading3) return;
     // if (roiRankError || amountRankError || userRankError) return;
@@ -140,6 +172,18 @@ export default function Ranking() {
               </>
             );
           })}
+      </div>
+      <div className="my-ranking-container fixed w-full max-w-[576px] bottom-5 left-1/2 transform -translate-x-1/2 rounded-lg shadow-lg border border-blue-100 shadow-slate-200 px-6 py-4 pt-3 bg-white">
+        {myRanking ? (
+          <div>
+            <h2 className="text-base font-bold absolute top-[4px] text-blue-800">
+              내 클럽 랭킹
+            </h2>
+            {myRanking}
+          </div>
+        ) : (
+          <div></div>
+        )}
       </div>
     </div>
   );
