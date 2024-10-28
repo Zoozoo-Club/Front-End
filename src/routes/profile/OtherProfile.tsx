@@ -27,9 +27,9 @@ export default function OtherProfile() {
     try {
       console.log("눌리면 대답을해");
       await service.follow(+id);
-      console.log("res옴?");
       mutate("other-follower");
       mutate("other-following");
+      setIsFollowing(true);
     } catch (error) {
       console.error(error);
     }
@@ -38,11 +38,10 @@ export default function OtherProfile() {
     if (!id) return;
     try {
       console.log("눌리면 대답을해un");
-      const res = await service.unFollow(+id);
-      console.log("res옴?");
-      console.log("res:", res);
+      await service.unFollow(+id);
       mutate("other-follower");
       mutate("other-following");
+      setIsFollowing(false);
     } catch (error) {
       console.error(error);
     }
@@ -76,6 +75,8 @@ export default function OtherProfile() {
       const meFollow = follower.find((v) => v.nickname === nickname);
       if (meFollow) {
         setIsFollowing(true);
+      } else {
+        setIsFollowing(false);
       }
     }
     if (nickname && nickname === data?.userName) navigate("/profile");
