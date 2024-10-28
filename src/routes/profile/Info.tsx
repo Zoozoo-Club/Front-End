@@ -6,7 +6,7 @@ import { IAssetInfoRes, IHoldingsRes } from "@/apis/types";
 import { useNavigate } from "react-router-dom";
 import { formatNumber } from "@/lib/nums";
 import Loading from "@/components/Loading";
-
+const colors = ["ff6384", "36a2eb", "ffce56", "4bc0c0", "9966ff", "ff9f40"];
 export default function Info() {
   const navigate = useNavigate();
   const service = new assetAPI();
@@ -93,7 +93,7 @@ export default function Info() {
                   <StockItem
                     name={v.prdt_name}
                     profit={"" + v.evlu_pfls_rt}
-                    color={"ff6384"}
+                    color={colors[i]}
                     price={v.pchs_avg_pric.split(".")[0]}
                     key={i}
                     percent={formatNumber(+v.holdingRatio, 2)}

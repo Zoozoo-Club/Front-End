@@ -2,23 +2,25 @@ import ChartPortfolio from "@/components/ChartPortfolio";
 import StockItem from "./StockItem";
 import assetAPI from "@/apis/assetAPI";
 import useSWR from "swr";
-import { IAssetInfoRes, IHoldingsRes } from "@/apis/types";
+import { IOtherAssetsRes, ITargetAssetRes } from "@/apis/types";
 import { useNavigate } from "react-router-dom";
 import { formatNumber } from "@/lib/nums";
 type Props = {
   id: string;
 };
+const colors = ["ff6384", "36a2eb", "ffce56", "4bc0c0", "9966ff", "ff9f40"];
 export default function Info({ id }: Props) {
   const navigate = useNavigate();
   const service = new assetAPI();
-  const { data, isLoading, error } = useSWR<IAssetInfoRes>("other-asset", () =>
-    service.targetUserAsset(+id)
+  const { data, isLoading, error } = useSWR<ITargetAssetRes>(
+    "other-asset",
+    () => service.targetUserAsset(+id)
   );
   const {
     data: holdings,
     isLoading: isLoading2,
     error: error2,
-  } = useSWR<IHoldingsRes[]>("other-holdings", () =>
+  } = useSWR<IOtherAssetsRes>("other-holdings", () =>
     service.targetUserHoldings(+id)
   );
 
@@ -28,23 +30,16 @@ export default function Info({ id }: Props) {
   if (error || error2) {
     navigate("/error");
   }
-  const total =
-    data &&
-    data.output2 &&
-    data.output2?.length > 0 &&
-    +data?.output2[0].evlu_pfls_smtl_amt + +data?.output2[0].pchs_amt_smtl_amt;
-  const investmentChange =
-    data && data.output2 && data.output2?.length > 0 && data?.output2[0].roi;
+
+  const investmentChange = holdings && holdings && holdings.roi;
   const ratio =
-    data &&
-    data.output1 &&
-    data.output1.length > 0 &&
-    data.output1.map((v) => +v.holdingRatio);
+    holdings &&
+    holdings.stocksInfos.length > 0 &&
+    holdings.stocksInfos.map((v) => +v.holdingRatio);
   const holdingNames =
-    data &&
-    data.output1 &&
-    data.output1.length > 0 &&
-    data.output1.map((v) => v.prdt_name);
+    holdings &&
+    holdings.stocksInfos.length > 0 &&
+    holdings.stocksInfos.map((v) => v.stockName);
 
   return (
     <div className="p-3">
@@ -52,9 +47,9 @@ export default function Info({ id }: Props) {
       <div className="club-info flex justify-between">
         <p className="text-2xl font-semibold p-4 ">총 투자</p>
         <div className="right text-right p-5">
-          {total && (
+          {data && (
             <p className="text-lg font-semibold leading-none">
-              {formatNumber(total)}원
+              {data.pchsAmtSmtlAmt}
             </p>
           )}
           {investmentChange && (
@@ -90,17 +85,17 @@ export default function Info({ id }: Props) {
         </div>
         <div className="porfolio flex flex-col gap-2 items-center">
           <div className="stock-info flex-1 w-full p-4">
-            {data?.output1 &&
-              data.output1.map((v, i) => {
+            {holdings &&
+              holdings.stocksInfos.map((v, i) => {
                 return (
                   <StockItem
-                    name={v.prdt_name}
-                    profit={"" + v.evlu_pfls_rt}
-                    color={"ff6384"}
-                    price={v.pchs_avg_pric.split(".")[0]}
+                    name={v.stockName}
+                    profit={"" + v.earningRate}
+                    color={colors[i]}
+                    price={""}
                     key={i}
                     percent={formatNumber(+v.holdingRatio, 2)}
-                    amount={"" + v.hldg_qty}
+                    amount={"" + v.quantity}
                   />
                 );
               })}

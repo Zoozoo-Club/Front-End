@@ -40,16 +40,18 @@ export default function StockItem({
       </div>
       {on && (
         <>
-          <div className="flex items-center justify-between pt-2">
-            <div className="left flex items-center">
-              <div className="pl-1">
-                <p className="leading-none pb-1">평균 매입가</p>
+          {price && (
+            <div className="flex items-center justify-between pt-2">
+              <div className="left flex items-center">
+                <div className="pl-1">
+                  <p className="leading-none pb-1">평균 매입가</p>
+                </div>
               </div>
+              <p className="text-slate-400 font-light text-sm leading-none">
+                {price}원
+              </p>
             </div>
-            <p className="text-slate-400 font-light text-sm leading-none">
-              {price}원
-            </p>
-          </div>
+          )}
           <div className="flex items-center justify-between">
             <div className="left flex items-center">
               <div className="pl-1">

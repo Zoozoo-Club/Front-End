@@ -7,7 +7,7 @@ import Story from "./Story";
 import Info from "./Info";
 import followsAPI from "@/apis/followsAPI";
 import useSWR from "swr";
-import { IFollowerRes, IFollowingRes } from "@/apis/types";
+import { IFollowerRes, IFollowingRes, IOtherInfo } from "@/apis/types";
 import { useAuthStore } from "@/store/store";
 import OtherInfo from "./OtherInfo";
 
@@ -34,6 +34,13 @@ export default function OtherProfile() {
     error: error2,
   } = useSWR<IFollowingRes[] | null>("other-following", () =>
     id ? service.targetUserFollowing(+id) : null
+  );
+  const {
+    data,
+    isLoading: isLoading3,
+    error: error3,
+  } = useSWR<IOtherInfo | null>("other-info", () =>
+    id ? service.targetUserInfo(id) : null
   );
   useEffect(() => {
     console.log("flow0", follower);
@@ -69,10 +76,10 @@ export default function OtherProfile() {
       <div className="container flex-grow flex flex-col">
         <div className="my-info flex justify-between p-4 w-full">
           <div>
-            <p className="text-2xl font-semibold">{"소욘"}</p>
-            <p>{"삼성전자 클럽"}</p>
+            <p className="text-2xl font-semibold">{data?.userName}</p>
+            <p>{data?.clubName + " 클럽"}</p>
           </div>
-          <Avatar name={"소욘"} variant="beam" width={48} />
+          <Avatar name={data?.userName} variant="beam" width={48} />
         </div>
         <div className="my-info flex justify-between text-center px-8 py-2 items-center">
           <div className="cnt ">
