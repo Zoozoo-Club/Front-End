@@ -148,7 +148,7 @@ export default function Ranking() {
         {data &&
           data.map((item, idx) => {
             return (
-              <>
+              <div key={item.clubId}>
                 {idx !== 0 && (
                   <div
                     className="line bg-slate-200 h-[1px] w-full"
@@ -167,7 +167,7 @@ export default function Ranking() {
                   type={activeType}
                   imgId={item.code}
                 />
-              </>
+              </div>
             );
           })}
       </div>
