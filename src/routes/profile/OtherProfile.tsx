@@ -10,6 +10,7 @@ import useSWR from "swr";
 import { IFollowerRes, IFollowingRes, IOtherInfo } from "@/apis/types";
 import { useAuthStore } from "@/store/store";
 import OtherInfo from "./OtherInfo";
+import Loading from "@/components/Loading";
 
 export default function OtherProfile() {
   const { id } = useParams(); // URL에서 id를 추출
@@ -58,7 +59,7 @@ export default function OtherProfile() {
     return <div> no id</div>;
   }
   if (isLoading || isLoading2 || isLoading3) {
-    return <div> Loading.. </div>;
+    return <Loading size="md" text="유저 정보를 불러오는 중입니다" />;
   }
 
   const onRank = () => {

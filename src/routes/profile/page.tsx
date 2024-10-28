@@ -9,6 +9,7 @@ import { useAuthStore } from "@/store/store";
 import useSWR from "swr";
 import { IMyClubRes } from "@/apis/types";
 import clubAPI from "@/apis/clubAPI";
+import Loading from "@/components/Loading";
 
 export default function Profile() {
   const navigate = useNavigate();
@@ -31,7 +32,7 @@ export default function Profile() {
     isLoading,
   } = useSWR<IMyClubRes>("my-club", () => service.getMyClub());
   if (isLoading) {
-    return <div>Loading..</div>;
+    return <Loading size="md" text="유저 정보를 불러오는 중입니다" />;
   }
   if (error) {
     navigate("/error");
