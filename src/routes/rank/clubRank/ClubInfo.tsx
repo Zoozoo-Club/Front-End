@@ -5,7 +5,7 @@ import { IClubCurrentPrice, IClubInfoRes } from "@/apis/types";
 import clubAPI from "@/apis/clubAPI";
 import useSWR from "swr";
 import { formatNumber, truncateToEok } from "@/lib/nums";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import Loading from "@/components/Loading";
 const { VITE_STOCK_IMG_URL, VITE_STOCK_IMG_URLB } = import.meta.env;
 
@@ -14,7 +14,7 @@ type Props = {
   id: string;
 };
 export default function ClubInfo({ infos, id }: Props) {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const goToExternalSite = (url: string | undefined) => {
     if (url) window.location.href = "https://" + url;
@@ -30,7 +30,8 @@ export default function ClubInfo({ infos, id }: Props) {
     return <Loading size="md" text="클럽 정보를 불러오는 중입니다" />;
   }
   if (error) {
-    navigate("/error");
+    // navigate("/error");
+    return <div>Error</div>;
   }
   return (
     <div className="p-3">

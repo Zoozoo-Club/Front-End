@@ -66,7 +66,7 @@ const routers = [
     element: <Dev />,
   },
   {
-    path: "*",
+    path: "/error",
     element: <ErrorPage />,
   },
 ];

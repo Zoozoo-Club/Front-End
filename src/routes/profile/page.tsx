@@ -35,7 +35,8 @@ export default function Profile() {
     return <Loading size="md" text="유저 정보를 불러오는 중입니다" />;
   }
   if (error) {
-    navigate("/error");
+    // navigate("/error");
+    return <div>Error</div>;
   }
   return (
     <>

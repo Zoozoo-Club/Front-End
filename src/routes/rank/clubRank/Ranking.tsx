@@ -20,7 +20,8 @@ export default function Ranking({ id }: { id: string }) {
     return <Loading size="md" text="랭킹 정보를 불러오는 중입니다" />;
   }
   if (error) {
-    navigate("/error");
+    // navigate("/error");
+    return <div>Error</div>;
   }
 
   return (
@@ -35,7 +36,9 @@ export default function Ranking({ id }: { id: string }) {
                 )}
                 <RankItem
                   key={`${item.userId}-${idx}`}
-                  onClick={() => {}}
+                  onClick={() => {
+                    navigate(`/profile/${item.userId}`);
+                  }}
                   no={idx + 1}
                   name={item.nickname}
                   roi={item.roi}

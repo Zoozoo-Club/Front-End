@@ -3,7 +3,7 @@ import StockItem from "./StockItem";
 import assetAPI from "@/apis/assetAPI";
 import useSWR from "swr";
 import { IOtherAssetsRes, ITargetAssetRes } from "@/apis/types";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { formatNumber } from "@/lib/nums";
 import Loading from "@/components/Loading";
 type Props = {
@@ -11,7 +11,7 @@ type Props = {
 };
 const colors = ["ff6384", "36a2eb", "ffce56", "4bc0c0", "9966ff", "ff9f40"];
 export default function Info({ id }: Props) {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const service = new assetAPI();
   const { data, isLoading, error } = useSWR<ITargetAssetRes>(
     "other-asset",
@@ -29,7 +29,8 @@ export default function Info({ id }: Props) {
     return <Loading size="md" text="유저 정보를 불러오는 중입니다" />;
   }
   if (error || error2) {
-    navigate("/error");
+    // navigate("/error");
+    return <div>Error</div>;
   }
 
   const investmentChange = holdings && holdings && holdings.roi;

@@ -5,7 +5,7 @@ import Menu from "./Menu";
 import Avatar from "boring-avatars";
 import Story from "./Story";
 import followsAPI from "@/apis/followsAPI";
-import useSWR from "swr";
+import useSWR, { mutate } from "swr";
 import { IFollowerRes, IFollowingRes, IOtherInfo } from "@/apis/types";
 import { useAuthStore } from "@/store/store";
 import OtherInfo from "./OtherInfo";
@@ -21,6 +21,32 @@ export default function OtherProfile() {
     navigate("/error");
   }
   const [selectedMenu, setSelectedMenu] = useState<"story" | "stock">("story");
+
+  const handleFollow = async () => {
+    if (!id) return;
+    try {
+      console.log("눌리면 대답을해");
+      await service.follow(+id);
+      console.log("res옴?");
+      mutate("other-follower");
+      mutate("other-following");
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const handleUnFollow = async () => {
+    if (!id) return;
+    try {
+      console.log("눌리면 대답을해un");
+      const res = await service.unFollow(+id);
+      console.log("res옴?");
+      console.log("res:", res);
+      mutate("other-follower");
+      mutate("other-following");
+    } catch (error) {
+      console.error(error);
+    }
+  };
   const {
     data: follower,
     isLoading,
@@ -54,6 +80,7 @@ export default function OtherProfile() {
     }
     if (nickname && nickname === data?.userName) navigate("/profile");
   }, [follower, nickname, data]);
+
   if (error || error2 || error3 || !id) {
     return <div> no id</div>;
   }
@@ -105,11 +132,17 @@ export default function OtherProfile() {
         </div>
         <div className="btn-container p-4">
           {isFollowing ? (
-            <div className="btn unfollow w-full h-12 bg-blue-500 rounded-lg text-center flex justify-center items-center my-2">
+            <div
+              className="btn unfollow w-full h-12 bg-blue-500 rounded-lg text-center flex justify-center items-center my-2"
+              onClick={handleUnFollow}
+            >
               <p className="text-white font-medium text-lg">언팔로우</p>
             </div>
           ) : (
-            <div className="btn unfollow w-full h-12 bg-blue-500 rounded-lg text-center flex justify-center items-center my-2">
+            <div
+              className="btn unfollow w-full h-12 bg-blue-500 rounded-lg text-center flex justify-center items-center my-2"
+              onClick={handleFollow}
+            >
               <p className="text-white font-medium text-lg">팔로우</p>
             </div>
           )}
