@@ -85,7 +85,7 @@ export default function Lounge() {
       </HeaderNav>
       <div className="container flex-grow flex flex-col">
         <Menu selectedMenu={selectedMenu} onRank={onAll} onInfo={onMine} />
-        <div className="flex-grow h-96 pb-12 overflow-scroll">
+        <div className="flex-grow h-96 pb-12 overflow-scroll scroll">
           <Board tab={selectedMenu} data={data} />
         </div>
       </div>
