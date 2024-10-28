@@ -1,14 +1,19 @@
 import HeaderNav from "@/components/HeaderNav";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Menu from "./Menu";
 import Avatar from "boring-avatars";
 import Story from "./Story";
 import Info from "./Info";
+import { useAuthStore } from "@/store/store";
+import useSWR from "swr";
+import { IMyClubRes } from "@/apis/types";
+import clubAPI from "@/apis/clubAPI";
 
 export default function Profile() {
   const navigate = useNavigate();
-  const isFollowing = useState<boolean>(false);
+  const service = useMemo(() => new clubAPI(), []);
+  const { nickname } = useAuthStore();
   const [selectedMenu, setSelectedMenu] = useState<"story" | "stock">("story");
   const onRank = () => {
     setSelectedMenu("story");
@@ -20,17 +25,27 @@ export default function Profile() {
     // /rank -> / , /rank/detail?club= -> /rank
     navigate(-1);
   };
-
+  const {
+    data: myClub,
+    error,
+    isLoading,
+  } = useSWR<IMyClubRes>("my-club", () => service.getMyClub());
+  if (isLoading) {
+    return <div>Loading..</div>;
+  }
+  if (error) {
+    navigate("/error");
+  }
   return (
     <>
       <HeaderNav title={"프로필"} backBtn={handleBack}></HeaderNav>
       <div className="container flex-grow flex flex-col">
         <div className="my-info flex justify-between p-4 w-full">
           <div>
-            <p className="text-2xl font-semibold">{"소욘"}</p>
-            <p>{"삼성전자 클럽"}</p>
+            <p className="text-2xl font-semibold">{nickname}</p>
+            <p>{myClub?.clubName + " 클럽"}</p>
           </div>
-          <Avatar name={"소욘"} variant="beam" width={48} />
+          <Avatar name={nickname || ""} variant="beam" width={48} />
         </div>
         <div className="my-info flex justify-between text-center px-8 py-2 items-center">
           <div className="cnt ">
