@@ -1,6 +1,5 @@
 import { truncateToTwoDecimals } from "@/lib/nums";
 import Avatar from "boring-avatars";
-import React from "react";
 
 type Props = {
   no: number;
@@ -19,7 +18,7 @@ export default function RankItem({ no, name, id, roi, onClick }: Props) {
       <div className="left flex">
         <p className="w-7 pr-2 font-semibold text-lg inline-block">{no} </p>
         <Avatar width={32} variant="beam" name={name} />
-        <span className="pl-3 font-semibold">{name} 클럽</span>
+        <span className="pl-3 font-semibold">{name}</span>
       </div>
       <div
         className={`right text-xl ${

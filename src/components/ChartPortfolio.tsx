@@ -42,13 +42,22 @@ const options = {
 type Props = {
   ratios: number[]; //6자리
   labels: string[];
+  isGita: boolean;
 };
-export default function ChartPortfolio({ ratios, labels }: Props) {
+export default function ChartPortfolio({
+  ratios,
+  labels,
+  isGita = true,
+}: Props) {
   useEffect(() => {
     const total = ratios.reduce((a, b) => a + b);
     const gita = 100 - total;
-    const arr = [...ratios, gita];
-    data.labels = [...labels, "기타"];
+    let arr: number[] = [];
+    if (isGita) arr = [...ratios, gita];
+    else arr = [...ratios];
+
+    if (isGita) data.labels = [...labels, "기타"];
+    else data.labels = labels;
     data.datasets[0].data = arr;
   }, []);
   return (

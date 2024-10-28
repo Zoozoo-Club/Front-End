@@ -99,21 +99,23 @@ export interface IAssetInfoRes {
       quantity?: string | null; // 수량
     } | null;
     pdno?: string | null; // 종목코드
-    prdt_name?: string | null; // 종목명
-    hldg_qty?: string | null; // 보유수량
+    prdt_name: string; // 종목명
+    hldg_qty: string; // 보유수량
+    holdingRatio: string;
     evlu_amt?: string | null; // 평가금액
     evlu_pfls_amt?: string | null; // 평가손익금액
     evlu_pfls_rt?: string | null; // 평가손익률
-    pchs_avg_pric?: string | null; // 매입평균가
-    prpr?: string | null; // 현재가
+    pchs_avg_pric: string; // 매입평균가
+    prpr: string; // 현재가
   }>;
   output2?: Array<{
     map?: {
       pchsAmtSmtlAmt: string; // 매입금액 합계
-      evluPflsSmtlAmt?: string | null; // 평가손익 합계
+      evluPflsSmtlAmt: string; // 평가손익 합계
     } | null;
-    evlu_pfls_smtl_amt?: string | null; // 평가손익 합계
-    pchs_amt_smtl_amt?: string | null; // 매입금액 합계
+    evlu_pfls_smtl_amt: string; // 평가손익 합계
+    pchs_amt_smtl_amt: string; // 매입금액 합계
+    roi: number;
   }>;
 }
 
@@ -122,12 +124,12 @@ export interface ITargetAssetRes {
 }
 
 export interface IHoldingsRes {
-  stockCode?: string | null;
-  stockName?: string | null;
-  quantity?: number | null;
-  averagePrice?: number | null;
-  currentPrice?: number | null;
-  earningRate?: number | null;
+  stockCode: string;
+  stockName: string;
+  quantity: number;
+  averagePrice: number;
+  currentPrice: number;
+  earningRate: number;
 }
 
 export interface IMyClubRes {
