@@ -37,7 +37,7 @@ export interface IPostRes {
 }
 
 export interface IStockHoldings {
-  stockCode?: string | null;
+  stockCode: string;
   stockName: string;
   holdingRatio: number;
   roi: number;
@@ -96,7 +96,7 @@ export interface IAssetInfoRes {
       pchsAvgPric?: string | null; // 매입평균가
       stockName?: string | null; // 종목명
       evluPflsAmt?: string | null; // 평가손익금액
-      stockCode?: string | null; // 종목코드
+      stockCode: string; // 종목코드
       currentPrice?: string | null; // 현재가
       evluPflsRt?: string | null; // 평가손익률
       quantity?: string | null; // 수량

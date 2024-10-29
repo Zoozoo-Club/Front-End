@@ -9,6 +9,8 @@ import { IClubCurrentPrice, IClubInfoRes, IMyClubRes } from "@/apis/types";
 import { formatNumber, truncateToEok } from "@/lib/nums";
 import productsAPI from "@/apis/productsAPI";
 import Loading from "@/components/Loading";
+import { encodeText } from "@/lib/utils";
+import ArrowRight from "@/assets/icon-arrow-right.svg?react";
 
 interface IRecommendBond {
   profit: number;
@@ -21,6 +23,14 @@ interface IRecommendBond {
 const { VITE_STOCK_IMG_URL, VITE_STOCK_IMG_URLB } = import.meta.env;
 export default function ClubInfo() {
   // const navigate = useNavigate();
+  const goToExternalMTS = (stockCode: string) => {
+    let market = "KOSDAQ";
+    if (stockCode === "005930") {
+      market = "KOSPI";
+    }
+    const strEncode = encodeText(`1110&&1&${stockCode}&S&${market}&`);
+    window.open(`https://open.shinhansec.com/phone/goM.jsp?p=${strEncode}&v=2`);
+  };
   const goToExternalSite = (url: string | undefined) => {
     if (url) window.open(url, "_blank");
   };
@@ -93,7 +103,13 @@ export default function ClubInfo() {
       </div>
       <div className="stock-container pt-4">
         <p className="text-xl font-bold">대표 주식</p>
-        <div className="flex justify-between p-4">
+        <div
+          className="flex justify-between p-4"
+          onClick={() =>
+            infos.companyInfo.logoId &&
+            goToExternalMTS(infos.companyInfo.logoId)
+          }
+        >
           <div className="left flex gap-4 items-center">
             <img
               className="w-8 h-8 rounded-xl"
@@ -102,12 +118,13 @@ export default function ClubInfo() {
             />
             <p className="text-lg font-semibold">{"신한지주"}</p>
           </div>
-          <div className="right">
+          <div className="right flex items-center">
             {data && (
               <p className="text font-semibold leading-none">
                 {formatNumber(data?.currentPrice)}원
               </p>
             )}
+            <ArrowRight />
           </div>
         </div>
       </div>
@@ -141,6 +158,7 @@ export default function ClubInfo() {
               name={infos.clubPortfolio.stockHoldings[0].stockName}
               profit={infos.clubPortfolio.stockHoldings[0].holdingRatio}
               color={"ff6384"}
+              code={infos.clubPortfolio.stockHoldings[0].stockCode}
               roi={infos.clubPortfolio.stockHoldings[0].roi}
               key={1}
             />
@@ -148,6 +166,7 @@ export default function ClubInfo() {
               name={infos.clubPortfolio.stockHoldings[1].stockName}
               profit={infos.clubPortfolio.stockHoldings[1].holdingRatio}
               color={"36a2eb"}
+              code={infos.clubPortfolio.stockHoldings[1].stockCode}
               roi={infos.clubPortfolio.stockHoldings[1].roi}
               key={2}
             />
@@ -155,6 +174,7 @@ export default function ClubInfo() {
               name={infos.clubPortfolio.stockHoldings[2].stockName}
               profit={infos.clubPortfolio.stockHoldings[2].holdingRatio}
               color={"ffce56"}
+              code={infos.clubPortfolio.stockHoldings[1].stockCode}
               key={3}
               roi={infos.clubPortfolio.stockHoldings[2].roi}
             />

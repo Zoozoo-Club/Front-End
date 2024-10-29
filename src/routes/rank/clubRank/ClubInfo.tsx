@@ -9,6 +9,8 @@ import { formatNumber, truncateToEok } from "@/lib/nums";
 import Loading from "@/components/Loading";
 import productsAPI from "@/apis/productsAPI";
 import RecommendItem from "../RecommendItem";
+import { encodeText } from "@/lib/utils";
+import ArrowRight from "@/assets/icon-arrow-right.svg?react";
 const { VITE_STOCK_IMG_URL, VITE_STOCK_IMG_URLB } = import.meta.env;
 
 interface IRecommendBond {
@@ -25,7 +27,14 @@ type Props = {
 };
 export default function ClubInfo({ infos, id }: Props) {
   // const navigate = useNavigate();
-
+  const goToExternalMTS = (stockCode: string) => {
+    let market = "KOSDAQ";
+    if (stockCode === "005930") {
+      market = "KOSPI";
+    }
+    const strEncode = encodeText(`1110&&1&${stockCode}&S&${market}&`);
+    window.open(`https://open.shinhansec.com/phone/goM.jsp?p=${strEncode}&v=2`);
+  };
   const goToExternalSite = (url: string | undefined) => {
     if (url) window.open("http://" + url, "_blank");
   };
@@ -81,7 +90,13 @@ export default function ClubInfo({ infos, id }: Props) {
       </div>
       <div className="stock-container pt-4">
         <p className="text-xl font-bold">대표 주식</p>
-        <div className="flex justify-between p-4">
+        <div
+          className="flex justify-between p-4"
+          onClick={() =>
+            infos.companyInfo.logoId &&
+            goToExternalMTS(infos.companyInfo.logoId)
+          }
+        >
           <div className="left flex gap-4 items-center">
             {infos.companyInfo.logoId ? (
               <img
@@ -95,12 +110,13 @@ export default function ClubInfo({ infos, id }: Props) {
 
             <p className="text-lg font-semibold">{data?.name}</p>
           </div>
-          <div className="right">
+          <div className="right flex items-center">
             {data && (
               <p className="text font-semibold leading-none">
                 {formatNumber(data?.currentPrice)}원
               </p>
             )}
+            <ArrowRight />
           </div>
         </div>
       </div>
@@ -134,6 +150,7 @@ export default function ClubInfo({ infos, id }: Props) {
               name={infos.clubPortfolio.stockHoldings[0].stockName}
               profit={infos.clubPortfolio.stockHoldings[0].holdingRatio}
               color={"ff6384"}
+              code={infos.clubPortfolio.stockHoldings[0].stockCode}
               roi={infos.clubPortfolio.stockHoldings[0].roi}
               key={1}
             />
@@ -141,6 +158,7 @@ export default function ClubInfo({ infos, id }: Props) {
               name={infos.clubPortfolio.stockHoldings[1].stockName}
               profit={infos.clubPortfolio.stockHoldings[1].holdingRatio}
               color={"36a2eb"}
+              code={infos.clubPortfolio.stockHoldings[1].stockCode}
               roi={infos.clubPortfolio.stockHoldings[1].roi}
               key={2}
             />
@@ -149,6 +167,7 @@ export default function ClubInfo({ infos, id }: Props) {
               profit={infos.clubPortfolio.stockHoldings[2].holdingRatio}
               color={"ffce56"}
               key={3}
+              code={infos.clubPortfolio.stockHoldings[2].stockCode}
               roi={infos.clubPortfolio.stockHoldings[2].roi}
             />
           </div>

@@ -1,14 +1,29 @@
 import ArrowRight from "@/assets/icon-arrow-right.svg?react";
 import { formatNumber } from "@/lib/nums";
+import { encodeText } from "@/lib/utils";
 type Props = {
   name: string;
   profit: number;
   color: string;
   roi: number;
+  code: string;
 };
-export default function Top3Item({ name, profit, color, roi }: Props) {
+export default function Top3Item({ name, profit, color, roi, code }: Props) {
+  const goToExternalSite = (stockCode: string) => {
+    let market = "KOSDAQ";
+    if (stockCode === "005930") {
+      market = "KOSPI";
+    }
+    const strEncode = encodeText(`1110&&1&${stockCode}&S&${market}&`);
+    window.open(`https://open.shinhansec.com/phone/goM.jsp?p=${strEncode}&v=2`);
+  };
   return (
-    <div className="top3-item flex justify-between pb-4">
+    <div
+      className="top3-item flex justify-between pb-4"
+      onClick={() => {
+        goToExternalSite(code);
+      }}
+    >
       <div className="left flex items-center">
         <div
           className={`w-4 h-4 rounded inline-block`}
