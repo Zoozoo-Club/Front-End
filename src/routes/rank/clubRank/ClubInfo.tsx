@@ -7,7 +7,17 @@ import useSWR from "swr";
 import { formatNumber, truncateToEok } from "@/lib/nums";
 // import { useNavigate } from "react-router-dom";
 import Loading from "@/components/Loading";
+import productsAPI from "@/apis/productsAPI";
+import RecommendItem from "../RecommendItem";
 const { VITE_STOCK_IMG_URL, VITE_STOCK_IMG_URLB } = import.meta.env;
+
+interface IRecommendBond {
+  profit: number;
+  name: string;
+  category: string;
+  risk: number;
+  url?: string;
+}
 
 type Props = {
   infos: IClubInfoRes;
@@ -21,15 +31,23 @@ export default function ClubInfo({ infos, id }: Props) {
   };
   // API 호출해서 데이터 겟
   const service = useMemo(() => new clubAPI(), []);
+  const recomService = useMemo(() => new productsAPI(), []);
   // 참여자
   const { data, error, isLoading } = useSWR<IClubCurrentPrice>(
     "club-price",
     () => service.currentPrice(+id)
   );
-  if (isLoading) {
+  const {
+    data: recom,
+    error: recomError,
+    isLoading: recomIsLoading,
+  } = useSWR<IRecommendBond[]>("recommand", () =>
+    recomService.recommendedProductsByClubProfit()
+  );
+  if (isLoading || recomIsLoading) {
     return <Loading size="md" text="클럽 정보를 불러오는 중입니다" />;
   }
-  if (error) {
+  if (error || recomError) {
     // navigate("/error");
     return <div>Error</div>;
   }
@@ -134,6 +152,26 @@ export default function ClubInfo({ infos, id }: Props) {
               roi={infos.clubPortfolio.stockHoldings[2].roi}
             />
           </div>
+        </div>
+      </div>
+      <div className="recommend">
+        <p className="text-xl font-semibold pb-4 pl-2">신한의 추천 상품</p>
+        <div className="recommend-container flex gap-2">
+          {recom &&
+            recom
+              .filter((v) => v.risk >= 4)
+              .slice(0, 3)
+              .map((value) => {
+                return (
+                  <RecommendItem
+                    profit={value.profit}
+                    name={value.name}
+                    category={value.category}
+                    risk={value.risk}
+                    url={value.url}
+                  />
+                );
+              })}
         </div>
       </div>
     </div>

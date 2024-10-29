@@ -1,18 +1,12 @@
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Doughnut } from "react-chartjs-2";
+import Loading from "./Loading";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 export const data = {
-  labels: [
-    "에코프로",
-    "에코프로비엠",
-    "POSCO홀딩스",
-    "코스모신소재",
-    "LG화학",
-    "삼성전자",
-  ],
+  labels: [""],
   datasets: [
     {
       label: "비율",
@@ -49,6 +43,8 @@ export default function ChartPortfolio({
   labels,
   isGita = true,
 }: Props) {
+  const [isLoading, setLoading] = useState(true);
+  const [chartData, setChartData] = useState(data);
   useEffect(() => {
     const total = ratios.reduce((a, b) => a + b);
     const gita = 100 - total;
@@ -59,10 +55,16 @@ export default function ChartPortfolio({
     if (isGita) data.labels = [...labels, "기타"];
     else data.labels = labels;
     data.datasets[0].data = arr;
+    setChartData(data);
+    setLoading(false);
   }, []);
+
+  if (isLoading) {
+    return <Loading size="md" text="데이터를 불러오는 중입니다" />;
+  }
   return (
     <div className="">
-      <Doughnut data={data} options={options} />
+      <Doughnut data={chartData} options={options} />
     </div>
   );
 }
