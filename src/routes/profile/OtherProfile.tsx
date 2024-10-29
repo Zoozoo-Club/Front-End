@@ -36,8 +36,8 @@ export default function OtherProfile() {
       setIsBtnLoading(true);
 
       await service.follow(+id);
-      mutate("other-follower");
-      mutate("other-following");
+      mutate("other-follower" + id);
+      mutate("other-following" + id);
 
       setIsFollowing(true);
       // 1초 후에 버튼 활성화
@@ -56,8 +56,8 @@ export default function OtherProfile() {
       console.log("눌리면 대답을해un", isBtnLoading);
       setIsBtnLoading(true);
       await service.unFollow(+id);
-      mutate("other-follower");
-      mutate("other-following");
+      mutate("other-follower" + id);
+      mutate("other-following" + id);
       setIsFollowing(false);
       // 1초 후에 버튼 활성화
       setTimeout(() => {
@@ -72,14 +72,14 @@ export default function OtherProfile() {
     data: follower,
     isLoading,
     error,
-  } = useSWR<IFollowerRes[] | null>("other-follower", () =>
+  } = useSWR<IFollowerRes[] | null>(`other-follower` + id, () =>
     id ? service.targetUserFollowers(+id) : null
   );
   const {
     data: following,
     isLoading: isLoading2,
     error: error2,
-  } = useSWR<IFollowingRes[] | null>("other-following", () =>
+  } = useSWR<IFollowingRes[] | null>("other-following" + id, () =>
     id ? service.targetUserFollowing(+id) : null
   );
   const {
@@ -97,6 +97,7 @@ export default function OtherProfile() {
       const meFollow = follower.find((v) => v.nickname === nickname);
       if (meFollow) {
         setIsFollowing(true);
+        console.log("flow", meFollow);
       } else {
         setIsFollowing(false);
       }
