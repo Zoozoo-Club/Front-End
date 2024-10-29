@@ -50,7 +50,7 @@ export default function ClubRank() {
         backBtn={handleBack}
       >
         <div
-          className="btn text-sm bg-[#CBD9FF] p-1 px-3 rounded-full mr-1"
+          className="btn text-sm bg-[#CBD9FF] p-1 px-3 rounded-full mr-1 whitespace-nowrap truncate"
           onClick={goToLounge}
         >
           라운지 가기

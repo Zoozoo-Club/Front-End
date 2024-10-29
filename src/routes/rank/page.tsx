@@ -50,7 +50,7 @@ export default function Rank() {
     <>
       <HeaderNav title={"주주클럽 랭킹"} backBtn={handleBack}>
         <div
-          className="btn text-sm bg-[#CBD9FF] p-1 px-3 rounded-full mr-1"
+          className="btn text-sm bg-[#CBD9FF] p-1 px-3 rounded-full whitespace-nowrap truncate mr-1"
           onClick={goToLounge}
         >
           라운지 가기
