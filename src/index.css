@@ -34,5 +34,5 @@ a {
 }
 
 body {
-  overflow-y: hidden;
+  overflow: hidden !important;
 }
