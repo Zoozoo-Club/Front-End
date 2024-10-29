@@ -144,7 +144,11 @@ export default function Ranking() {
           참여자 수
         </div>
       </div>
-      <div className="rank-container mx-4 my-2 rounded-lg shadow-lg border border-slate-100 shadow-slate-200 px-4 py-2">
+      <div
+        className={`rank-container mx-4 my-2 rounded-lg shadow-lg border border-slate-100 shadow-slate-200 px-4 py-2 ${
+          myRanking ? "mb-[76px]" : ""
+        }`}
+      >
         {data &&
           data.map((item, idx) => {
             return (
