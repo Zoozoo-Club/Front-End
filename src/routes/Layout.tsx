@@ -30,7 +30,7 @@ export default function Layout() {
         ></div>
       </div>
       <div className="max-w-xl w-xl h-screen-small relative z-1 m-auto flex flex-col items-center justify-between gap-6">
-        <main className="flex-1 w-full h-full overflow-scroll bg-white flex flex-col scroll">
+        <main className="flex-1 w-full h-full overflow-hidden bg-white flex flex-col scroll">
           <Outlet />
         </main>
         <div className="nav h-12 bg-white w-full max-w-[576px] fixed bottom-0 flex items-center">
@@ -61,7 +61,7 @@ export default function Layout() {
             </p>
           </div>
           <div className="w-12 h-full flex flex-col items-center justify-center bg-blue-500 text-white">
-            <CiMenuBurger/>
+            <CiMenuBurger />
             <p className="text-xs">메뉴</p>
           </div>
         </div>
