@@ -58,7 +58,7 @@ export default function ClubRank() {
       </HeaderNav>
       <div className="container flex-grow flex flex-col">
         <Menu selectedMenu={selectedMenu} onRank={onRank} onInfo={onInfo} />
-        <div className="flex-grow h-96 pb-12 overflow-scroll">
+        <div className="flex-grow h-96 pb-12 overflow-scroll scroll">
           {selectedMenu === "rank" && <Ranking id={id} />}
           {selectedMenu === "info" && data && <ClubInfo infos={data} id={id} />}
         </div>
