@@ -30,7 +30,7 @@ export default function Layout() {
         ></div>
       </div>
       <div className="max-w-xl w-xl h-screen-small relative z-1 m-auto flex flex-col items-center justify-between gap-6">
-        <main className="flex-1 w-full h-screen-small overflow-hidden bg-white flex flex-col scroll ">
+        <main className="flex-1 w-full h-screen-small overflow-hidden bg-white flex flex-col scroll fixed max-w-xl">
           <Outlet />
         </main>
         <div className="nav h-12 bg-white w-full max-w-[576px] fixed bottom-0 flex items-center">
