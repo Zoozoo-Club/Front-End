@@ -10,11 +10,17 @@ import { IFollowerRes, IFollowingRes, IOtherInfo } from "@/apis/types";
 import { useAuthStore } from "@/store/store";
 import OtherInfo from "./OtherInfo";
 import Loading from "@/components/Loading";
-
+import { Loader2 } from "lucide-react";
+const sizeClasses = {
+  sm: "w-6 h-6",
+  md: "w-10 h-10",
+  lg: "w-16 h-16",
+};
 export default function OtherProfile() {
   const { id } = useParams(); // URL에서 id를 추출
   const navigate = useNavigate();
   const [isFollowing, setIsFollowing] = useState<boolean>(false);
+  const [isBtnLoading, setIsBtnLoading] = useState<boolean>(false);
   const { nickname } = useAuthStore();
   const service = useMemo(() => new followsAPI(), []);
   if (!id) {
@@ -24,24 +30,40 @@ export default function OtherProfile() {
 
   const handleFollow = async () => {
     if (!id) return;
+    if (isBtnLoading) return;
     try {
-      console.log("눌리면 대답을해");
+      console.log("눌리면 대답을해", isBtnLoading);
+      setIsBtnLoading(true);
+
       await service.follow(+id);
       mutate("other-follower");
       mutate("other-following");
+
       setIsFollowing(true);
+      // 1초 후에 버튼 활성화
+      setTimeout(() => {
+        console.log("로딩끗");
+        setIsBtnLoading(false);
+      }, 500);
     } catch (error) {
       console.error(error);
     }
   };
   const handleUnFollow = async () => {
     if (!id) return;
+    if (isBtnLoading) return;
     try {
-      console.log("눌리면 대답을해un");
+      console.log("눌리면 대답을해un", isBtnLoading);
+      setIsBtnLoading(true);
       await service.unFollow(+id);
       mutate("other-follower");
       mutate("other-following");
       setIsFollowing(false);
+      // 1초 후에 버튼 활성화
+      setTimeout(() => {
+        console.log("로딩끗");
+        setIsBtnLoading(false);
+      }, 500);
     } catch (error) {
       console.error(error);
     }
@@ -137,14 +159,26 @@ export default function OtherProfile() {
               className="btn unfollow w-full h-12 bg-blue-500 rounded-lg text-center flex justify-center items-center my-2"
               onClick={handleUnFollow}
             >
-              <p className="text-white font-medium text-lg">언팔로우</p>
+              {isBtnLoading ? (
+                <Loader2
+                  className={`${sizeClasses["sm"]} animate-spin text-indigo-500`}
+                />
+              ) : (
+                <p className="text-white font-medium text-lg">언팔로우</p>
+              )}
             </div>
           ) : (
             <div
               className="btn unfollow w-full h-12 bg-blue-500 rounded-lg text-center flex justify-center items-center my-2"
               onClick={handleFollow}
             >
-              <p className="text-white font-medium text-lg">팔로우</p>
+              {isBtnLoading ? (
+                <Loader2
+                  className={`${sizeClasses["sm"]} animate-spin text-indigo-500`}
+                />
+              ) : (
+                <p className="text-white font-medium text-lg">팔로우</p>
+              )}
             </div>
           )}
         </div>
