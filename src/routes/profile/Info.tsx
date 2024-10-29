@@ -82,7 +82,7 @@ export default function Info() {
           </p>
         </div>
         <div className="porfolio flex flex-col gap-2 items-center">
-          <div className="stock-info flex-1 w-full p-4">
+          <div className="stock-info flex-1 w-full p-4 mb-12">
             {data?.output1 &&
               data.output1.map((v, i) => {
                 return (
